@@ -7,5 +7,6 @@ Jinja2
 MarkupSafe
 SQLAlchemy
 Werkzeug
+setuptools
 wheel
 honcho
