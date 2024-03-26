@@ -1,3 +1,3 @@
 export PORT=5006
-export SECRET_KEY="kristofer"
+export SECRET_KEY="data50"
 honcho start
