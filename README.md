@@ -43,7 +43,7 @@ $ ./run.sh
 
 and it should appear on port 5000
 
-`http://0.0.0.0:5000`
+`http://localhost:5000`
 
 ## Changes in 2023
 
@@ -52,3 +52,7 @@ removed version labels from `requirements.txt`
 
 The Heroku file is broken.
 The Procfile is broken too.
+
+## Changes in 2024
+
+Procfile is fixed.
