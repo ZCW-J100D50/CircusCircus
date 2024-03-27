@@ -13,9 +13,9 @@ bcrypt = Bcrypt()
 #OBJECT MODELS
 class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(200), unique=True)
-    password_hash = db.Column(db.String(20))
-    email = db.Column(db.String(200), unique=True)
+    username = db.Column(db.String(255), unique=True)
+    password_hash = db.Column(db.String(255))
+    email = db.Column(db.String(255), unique=True)
     admin = db.Column(db.Boolean, default=False)
     posts = db.relationship("Post", backref="user")
     comments = db.relationship("Comment", backref="user")
