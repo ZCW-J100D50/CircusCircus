@@ -11,8 +11,8 @@ class Config:
     # General Config
     SECRET_KEY = 'kristofer'
     FLASK_APP = 'forum.app'
-
+    #engine = create_engine("mysql+mysqldb://chrism:lesson@localhost/data5zero")
     # Database
-    SQLALCHEMY_DATABASE_URI = 'sqlite:///circuscircus.db'
+    SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://chrism:lesson@localhost/circuscircus' # 'sqlite:///circuscircus.db'
     SQLALCHEMY_ECHO = False
     SQLALCHEMY_TRACK_MODIFICATIONS = False

@@ -1,7 +1,9 @@
 
-from flask import render_template
+from flask import Flask, render_template, request
 from flask_login import LoginManager
+from flask_mysqldb import MySQL
 from forum.models import Subforum, db, User
+
 
 from . import create_app
 app = create_app()
@@ -9,6 +11,14 @@ app = create_app()
 app.config['SITE_NAME'] = 'Schooner'
 app.config['SITE_DESCRIPTION'] = 'a schooner forum'
 app.config['FLASK_DEBUG'] = 1
+app.config['MYSQL_HOST'] = 'localhost'
+app.config['MYSQL_USER'] = 'chrsm'
+app.config['MYSQL_PASSWORD'] = 'lesson'
+app.config['MYSQL_DB'] = 'flask'
+
+mysql = MySQL(app)
+#cursor = mysql.connection.cursor()
+
 
 def init_site():
 	print("creating initial subforums")
