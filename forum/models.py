@@ -1,5 +1,7 @@
 
 from werkzeug.security import generate_password_hash, check_password_hash
+from flask_bcrypt import Bcrypt
+import bcrypt
 from flask_login import UserMixin
 import datetime
 
@@ -7,13 +9,14 @@ import datetime
 from flask_sqlalchemy import SQLAlchemy
 
 db = SQLAlchemy()
+# bcrypt = Bcrypt()
 
 #OBJECT MODELS
 class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.Text, unique=True)
-    password_hash = db.Column(db.Text)
-    email = db.Column(db.Text, unique=True)
+    username = db.Column(db.String(255), unique=True)
+    password_hash = db.Column(db.LargeBinary(255))
+    email = db.Column(db.String(255), unique=True)
     admin = db.Column(db.Boolean, default=False)
     posts = db.relationship("Post", backref="user")
     comments = db.relationship("Comment", backref="user")
@@ -21,9 +24,13 @@ class User(UserMixin, db.Model):
     def __init__(self, email, username, password):
         self.email = email
         self.username = username
-        self.password_hash = generate_password_hash(password)
+        self.bytes = password.encode('utf-8')
+        self.salt = bcrypt.gensalt()
+        self.password_hash = bcrypt.hashpw(self.bytes, self.salt) #generate_password_hash(password)
+
     def check_password(self, password):
-        return check_password_hash(self.password_hash, password)
+        check_bytes = password.encode('utf-8')
+        return bcrypt.checkpw(check_bytes, self.password_hash)
     
 class Post(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -69,7 +76,7 @@ class Post(db.Model):
 
 class Subforum(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    title = db.Column(db.Text, unique=True)
+    title = db.Column(db.String(200), unique=True)
     description = db.Column(db.Text)
     subforums = db.relationship("Subforum")
     parent_id = db.Column(db.Integer, db.ForeignKey('subforum.id'))

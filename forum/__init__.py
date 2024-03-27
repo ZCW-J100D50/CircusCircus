@@ -1,5 +1,8 @@
+import os.path
+
 from flask import Flask
 from forum.routes import rt
+from os import path
 
 def create_app():
     """Construct the core application."""
@@ -16,6 +19,7 @@ def create_app():
     
     with app.app_context():
         # Add some routes
-        db.create_all()
+        if not os.path.exists('forum/circuscircus'):
+            db.create_all()
         return app
 

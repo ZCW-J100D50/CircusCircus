@@ -1,4 +1,4 @@
-Flask
+Flask~=3.0.2
 Flask-Login
 Flask-SQLAlchemy
 gunicorn
@@ -6,7 +6,8 @@ itsdangerous
 Jinja2
 MarkupSafe
 SQLAlchemy
-Werkzeug
+Werkzeug~=3.0.1
 setuptools
 wheel
 honcho
+mysql-connector-python~=8.3.0
