@@ -1,5 +1,6 @@
 
 from werkzeug.security import generate_password_hash, check_password_hash
+from flask_bcrypt import Bcrypt
 from flask_login import UserMixin
 import datetime
 
@@ -7,6 +8,7 @@ import datetime
 from flask_sqlalchemy import SQLAlchemy
 
 db = SQLAlchemy()
+bcrypt = Bcrypt()
 
 #OBJECT MODELS
 class User(UserMixin, db.Model):
@@ -21,9 +23,10 @@ class User(UserMixin, db.Model):
     def __init__(self, email, username, password):
         self.email = email
         self.username = username
-        self.password_hash = generate_password_hash(password, method='scrypt', salt_length=16)
+        self.password_hash = bcrypt.generate_password_hash(password) #generate_password_hash(password)
+
     def check_password(self, password):
-        return check_password_hash(self.password_hash, password)
+        return bcrypt.check_password_hash(password, self.password_hash)
     
 class Post(db.Model):
     id = db.Column(db.Integer, primary_key=True)
