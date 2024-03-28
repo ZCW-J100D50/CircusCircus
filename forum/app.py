@@ -1,24 +1,27 @@
 
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, flash, redirect, url_for
 from flask_login import LoginManager
 from flask_mysqldb import MySQL
 from forum.models import Subforum, db, User
+from werkzeug.utils import secure_filename
 
 
 from . import create_app
 app = create_app()
 
-app.config['SITE_NAME'] = 'Schooner'
-app.config['SITE_DESCRIPTION'] = 'a schooner forum'
+app.config['SITE_NAME'] = 'Groove Gathering'
+app.config['SITE_DESCRIPTION'] = 'a social dance forum'
 app.config['FLASK_DEBUG'] = 1
 app.config['MYSQL_HOST'] = 'localhost'
-app.config['MYSQL_USER'] = 'chrsm'
-app.config['MYSQL_PASSWORD'] = 'lesson'
+app.config['MYSQL_USER'] = 'lydia'
+app.config['MYSQL_PASSWORD'] = 'celeste'
 app.config['MYSQL_DB'] = 'flask'
 
 mysql = MySQL(app)
 #cursor = mysql.connection.cursor()
 
+UPLOAD_FOLDER = '/path/to/the/uploads'
+ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'}
 
 def init_site():
 	print("creating initial subforums")
@@ -59,7 +62,7 @@ with app.app_context():
 
 @app.route('/')
 def index():
-	subforums = Subforum.query.filter(Subforum.parent_id == None).order_by(Subforum.id)
+	subforums = Subforum.query.filter(Subforum.parent_id == None).order_by(Subforum.subID)
 	return render_template("subforums.html", subforums=subforums)
 
 

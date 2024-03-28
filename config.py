@@ -9,10 +9,10 @@ basedir = path.abspath(path.dirname(__file__))
 class Config:
     """Set Flask configuration from .env file."""
     # General Config
-    SECRET_KEY = 'kristofer'
+    SECRET_KEY = 'lydia'
     FLASK_APP = 'forum.app'
     #engine = create_engine("mysql+mysqldb://chrism:lesson@localhost/data5zero")
     # Database
-    SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://chrism:lesson@localhost/circuscircus' # 'sqlite:///circuscircus.db'
+    SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://lydia:celeste@localhost/circuscircus' # 'sqlite:///circuscircus.db'
     SQLALCHEMY_ECHO = False
     SQLALCHEMY_TRACK_MODIFICATIONS = False
