@@ -1,7 +1,11 @@
 import os.path
 
 from flask import Flask
-from forum.routes import rt
+from forum.auth import auth
+from forum.comments import comments
+from forum.posts import posts
+from forum.subforums import subforums
+#from forum.routes import rt
 from os import path
 
 def create_app():
@@ -12,7 +16,11 @@ def create_app():
     # post_routes
     # subforum_routes
     # etc
-    app.register_blueprint(rt)
+    app.register_blueprint(auth)
+    app.register_blueprint(comments)
+    app.register_blueprint(posts)
+    app.register_blueprint(subforums)
+    #app.register_blueprint(rt)
     # Set globals
     from forum.models import db
     db.init_app(app)
