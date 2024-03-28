@@ -2,8 +2,8 @@ import mysql.connector
 
 mydb = mysql.connector.connect(
     host="localhost",
-    user="chrism",
-    passwd="lesson",
+    user="lydia",
+    passwd="celeste",
 )
 
 my_cursor = mydb.cursor()

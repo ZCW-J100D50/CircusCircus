@@ -66,12 +66,12 @@ def action_createaccount():
 @rt.route('/subforum')
 def subforum():
 	subforum_id = int(request.args.get("sub"))
-	subforum = Subforum.query.filter(Subforum.id == subforum_id).first()
+	subforum = Subforum.query.filter(Subforum.subID == subforum_id).first()
 	if not subforum:
 		return error("That subforum does not exist!")
-	posts = Post.query.filter(Post.subforum_id == subforum_id).order_by(Post.id.desc()).limit(50)
+	posts = Post.query.filter(Post.subforum_id == subforum_id).order_by(Post.postID.desc()).limit(50)
 	if not subforum.path:
-		subforumpath = generateLinkPath(subforum.id)
+		subforumpath = generateLinkPath(subforum.subID)
 
 	subforums = Subforum.query.filter(Subforum.parent_id == subforum_id).all()
 	return render_template("subforum.html", subforum=subforum, posts=posts, subforums=subforums, path=subforumpath)
@@ -85,7 +85,7 @@ def loginform():
 @rt.route('/addpost')
 def addpost():
 	subforum_id = int(request.args.get("sub"))
-	subforum = Subforum.query.filter(Subforum.id == subforum_id).first()
+	subforum = Subforum.query.filter(Subforum.subID == subforum_id).first()
 	if not subforum:
 		return error("That subforum does not exist!")
 
@@ -94,19 +94,19 @@ def addpost():
 @rt.route('/viewpost')
 def viewpost():
 	postid = int(request.args.get("post"))
-	post = Post.query.filter(Post.id == postid).first()
+	post = Post.query.filter(Post.postID == postid).first()
 	if not post:
 		return error("That post does not exist!")
 	if not post.subforum.path:
-		subforumpath = generateLinkPath(post.subforum.id)
-	comments = Comment.query.filter(Comment.post_id == postid).order_by(Comment.id.desc()) # no need for scalability now
+		subforumpath = generateLinkPath(post.subforum.subID)
+	comments = Comment.query.filter(Comment.post_id == postid).order_by(Comment.commentID.desc()) # no need for scalability now
 	return render_template("viewpost.html", post=post, path=subforumpath, comments=comments)
 
 @login_required
 @rt.route('/action_comment', methods=['POST', 'GET'])
 def comment():
 	post_id = int(request.args.get("post"))
-	post = Post.query.filter(Post.id == post_id).first()
+	post = Post.query.filter(Post.postID == post_id).first()
 	if not post:
 		return error("That post does not exist!")
 	content = request.form['content']
@@ -121,7 +121,7 @@ def comment():
 @rt.route('/action_post', methods=['POST'])
 def action_post():
 	subforum_id = int(request.args.get("sub"))
-	subforum = Subforum.query.filter(Subforum.id == subforum_id).first()
+	subforum = Subforum.query.filter(Subforum.subID == subforum_id).first()
 	if not subforum:
 		return redirect(url_for("subforums"))
 
@@ -143,5 +143,5 @@ def action_post():
 	subforum.posts.append(post)
 	user.posts.append(post)
 	db.session.commit()
-	return redirect("/viewpost?post=" + str(post.id))
+	return redirect("/viewpost?post=" + str(post.postID))
 
