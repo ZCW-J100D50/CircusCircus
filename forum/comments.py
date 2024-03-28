@@ -17,7 +17,7 @@ comments = Blueprint('comments', __name__, template_folder='templates')
 @comments.route('/action_comment', methods=['POST', 'GET'])
 def comment():
 	post_id = int(request.args.get("post"))
-	post = Post.query.filter(Post.id == post_id).first()
+	post = Post.query.filter(Post.postID == post_id).first()
 	if not post:
 		return error("That post does not exist!")
 	content = request.form['content']
