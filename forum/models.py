@@ -1,6 +1,6 @@
 
-from werkzeug.security import generate_password_hash, check_password_hash
-from flask_bcrypt import Bcrypt
+# from werkzeug.security import generate_password_hash, check_password_hash
+# from flask_bcrypt import Bcrypt
 import bcrypt
 from flask_login import UserMixin
 import datetime
@@ -13,7 +13,7 @@ db = SQLAlchemy()
 
 #OBJECT MODELS
 class User(UserMixin, db.Model):
-    id = db.Column(db.Integer, primary_key=True)
+    userID = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(255), unique=True)
     password_hash = db.Column(db.LargeBinary(255))
     email = db.Column(db.String(255), unique=True)
@@ -31,14 +31,17 @@ class User(UserMixin, db.Model):
     def check_password(self, password):
         check_bytes = password.encode('utf-8')
         return bcrypt.checkpw(check_bytes, self.password_hash)
+
+    def get_id(self):
+        return str(self.userID)
     
 class Post(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
+    postID = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.Text)
     content = db.Column(db.Text)
     comments = db.relationship("Comment", backref="post")
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
-    subforum_id = db.Column(db.Integer, db.ForeignKey('subforum.id'))
+    user_id = db.Column(db.Integer, db.ForeignKey('user.userID'))
+    subforum_id = db.Column(db.Integer, db.ForeignKey('subforum.subID'))
     postdate = db.Column(db.DateTime)
 
     #cache stuff
@@ -75,11 +78,11 @@ class Post(db.Model):
         return self.savedresponce
 
 class Subforum(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
+    subID = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(200), unique=True)
     description = db.Column(db.Text)
     subforums = db.relationship("Subforum")
-    parent_id = db.Column(db.Integer, db.ForeignKey('subforum.id'))
+    parent_id = db.Column(db.Integer, db.ForeignKey('subforum.subID'))
     posts = db.relationship("Post", backref="subforum")
     path = None
     hidden = db.Column(db.Boolean, default=False)
@@ -88,11 +91,11 @@ class Subforum(db.Model):
         self.description = description
 
 class Comment(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
+    commentID = db.Column(db.Integer, primary_key=True)
     content = db.Column(db.Text)
     postdate = db.Column(db.DateTime)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
-    post_id = db.Column(db.Integer, db.ForeignKey("post.id"))
+    user_id = db.Column(db.Integer, db.ForeignKey('user.userID'))
+    post_id = db.Column(db.Integer, db.ForeignKey("post.postID"))
 
     lastcheck = None
     savedresponce = None
@@ -127,12 +130,12 @@ def error(errormessage):
 
 def generateLinkPath(subforumid):
 	links = []
-	subforum = Subforum.query.filter(Subforum.id == subforumid).first()
-	parent = Subforum.query.filter(Subforum.id == subforum.parent_id).first()
-	links.append("<a href=\"/subforum?sub=" + str(subforum.id) + "\">" + subforum.title + "</a>")
+	subforum = Subforum.query.filter(Subforum.subID == subforumid).first()
+	parent = Subforum.query.filter(Subforum.subID == subforum.parent_id).first()
+	links.append("<a href=\"/subforum?sub=" + str(subforum.subID) + "\">" + subforum.title + "</a>")
 	while parent is not None:
-		links.append("<a href=\"/subforum?sub=" + str(parent.id) + "\">" + parent.title + "</a>")
-		parent = Subforum.query.filter(Subforum.id == parent.parent_id).first()
+		links.append("<a href=\"/subforum?sub=" + str(parent.subID) + "\">" + parent.title + "</a>")
+		parent = Subforum.query.filter(Subforum.subID == parent.parent_id).first()
 	links.append("<a href=\"/\">Forum Index</a>")
 	link = ""
 	for l in reversed(links):

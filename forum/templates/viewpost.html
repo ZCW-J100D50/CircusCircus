@@ -4,7 +4,7 @@
 
 <div class="actualpost">
 	<div class="actualposttitle">
-		<a href="/viewpost?post={{ post.id }}">{{post.title}}</a>
+		<a href="/viewpost?post={{ post.postID }}">{{post.title}}</a>
 		<div class="postposter" {% if post.user.admin %} style="color: red;" {% endif %}>
 			{{ post.user.username }}
 
@@ -19,7 +19,7 @@
 
 </div>
 <div class="addcomment" id="addcomment">
-	<form action="/action_comment?post={{ post.id }}" method="POST">
+	<form action="/action_comment?post={{ post.postID }}" method="POST">
 		<textarea class="inputbox varwidth" rows="6" name="content"></textarea><br>
 		<input class="inputbox" style="margin-bottom: 1%;" type="submit" value="Comment">
 	</form>
@@ -57,6 +57,18 @@
 </div>
 {% endif %}
 <script type="text/javascript">
+	const input = document.getElementById('file-input');
+	const preview = document.getElementById('preview');
+
+	input.addEventListener('change', () => {
+	const reader = FileReader();
+	reader.onload = () => {
+	preview.src = reader.result;
+	};
+	reader.readAsDataURL(input.files[0]);
+	});
+
+
 function toggle(){
 	var div = document.getElementById("addcomment");
 	var button = document.getElementById("displayaddcomment")
