@@ -10,6 +10,9 @@ from forum.user import username_taken, email_taken, valid_username
 
 auth = Blueprint('auth', __name__, template_folder='templates')
 
+@auth.route('/loginform') #done
+def loginform():
+	return render_template("login.html")
 
 @auth.route('/action_login', methods=['POST'])
 def action_login():

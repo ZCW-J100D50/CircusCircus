@@ -20,7 +20,7 @@ def create_app():
     app.register_blueprint(comments)
     app.register_blueprint(posts)
     app.register_blueprint(subforums)
-    #app.register_blueprint(rt)
+    # app.register_blueprint(rt)
     # Set globals
     from forum.models import db
     db.init_app(app)
