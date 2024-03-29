@@ -1,0 +1,87 @@
+<!--<!DOCTYPE html>-->
+<!--<html>-->
+<!--<head>-->
+<!--	<link rel="stylesheet" type="text/css" href="{{url_for('static', filename="bootstrap.min.css")}}">-->
+<!--	<link rel="stylesheet" type="text/css" href="{{url_for('static', filename="style.css")}}">-->
+<!--	<title>{{ config.SITE_NAME }}</title>-->
+<!--</head>-->
+<!--<body>-->
+<!--<div class="page">-->
+<!--	<div class="header">-->
+<!--		{% include 'header.html' %}-->
+<!--	</div>-->
+<!--	{% if errors %}-->
+<!--	<div class="errors">-->
+<!--	{% for error in errors %}-->
+<!--		<p class="error">-->
+<!--			{{ error }}-->
+<!--		</p>-->
+
+<!--	{% endfor %}-->
+<!--	</div>-->
+<!--{% endif %}-->
+<!--	<div class="content">-->
+		{% block body %}THIS IS WHERE I WILL PUT MY CONTENT FOR THE ABOUT PAGE <br>
+		<li>CSS STUFF</li>
+		<li>BANNER OR OTHER STUFF LYDIA MADE</li>
+		<li>USER SETTINGS (WHY NOT? I WILL STICK 'EM RIGHT HERE)</li>
+		<li>(WHICH COULD BE STUCK ELSEWHERE)</li>
+
+		HERE ARE THE SETTING LINKS:<br>
+
+		<li>USER_CHANGE_PASSWORD_URL = '/user/change-password'
+		</li>
+		<li>USER_CHANGE_USERNAME_URL = '/user/change-username'
+		</li>
+		<li>USER_CONFIRM_EMAIL_URL = '/user/confirm-email/TOKEN'
+		</li>
+		<li>USER_EDIT_USER_PROFILE_URL = '/user/edit_user_profile'
+		</li>
+		<li>USER_LOGOUT_URL = '/user/sign-out'
+		</li>
+		<li>USER_REGISTER_URL = '/user/register'
+		</li>
+<!--If you don't remember password-->
+		<li>USER_RESET_PASSWORD_URL = '/user/reset-password/TOKEN'
+		</li>{% endblock %}
+	</div>
+</div>
+</body>
+
+{% extends 'layout.html' %}
+{% block body %}
+
+
+<div class="user_settings_box">
+	<h3>Change Password</h3>
+	<form action="/action_user_settings" method="POST">
+	<input class="userelement" type="text" placeholder="Change password" name="change_password"><br>
+	<input class="userelement" type="password" placeholder="New Password" name="new_password"><br>
+	<input class="userelement" type="submit" value="Change Password">
+	</form>
+</div>
+<br><br>
+<div class="user_settings_box">
+	<h3>Reset Password</h3>
+	<form action="/action_user_settings" method="POST">
+	<input class="loginelement" type="text" placeholder="Reset Password" name="reset_password"><br>
+	<input class="loginelement" type="password" placeholder="Reset Password" name="reset_password"><br>
+	<input class="loginelement" type="submit" value="Reset Password">
+	</form>
+
+</div>
+<br><br>
+<div class="user_settings_box">
+	<h3>Change Username</h3>
+	<form action="/action_user_settings" method="POST">
+	<input class="loginelement" type="text" placeholder="Change Username" name="change_username"><br>
+	<input class="loginelement" type="text" placeholder="Change Username" name="change_username"><br>
+	<input class="loginelement" type="submit" value="Change Username">
+	</form>
+
+</div>
+
+{% endblock %}
+
+
+</html>

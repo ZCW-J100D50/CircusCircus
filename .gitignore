@@ -142,3 +142,7 @@ cython_debug/
 
 #images for website
 .static/media
+
+#putting the config.py here at the end like @Deepa also does
+.getignore/
+.getignore

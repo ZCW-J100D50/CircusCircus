@@ -1,5 +1,5 @@
 
-from .models import User
+from CircusCircus.forum.models import User
 
 import re
 
