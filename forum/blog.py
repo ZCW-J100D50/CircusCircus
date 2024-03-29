@@ -26,11 +26,11 @@ def index():
     posts = Blogposts.query.all()
     return render_template('blogindex.html', post=posts)
 
-
+#{{ url_for('post', post_id=post['id']) }}
 @blog.route('/blog/<int:post_id>')
 def post(post_id):
-    post = Blogposts.query.filter(id=post_id)
-    return render_template('post.html', post=post)
+    posts = Blogposts.query.filter(id=post_id)
+    return render_template('post.html', post=posts)
 
 
 @blog.route('/blog/create', methods=('GET', 'POST'))
@@ -38,7 +38,7 @@ def create():
     if request.method == 'POST':
         title = request.form['title']
         content = request.form['content']
-
+      #  {{url_for('createblogpost')}}
         if not title:
             flash('Title is required!')
         else:
