@@ -21,8 +21,8 @@ app.config['MYSQL_DB'] = 'flask'
 mysql = MySQL(app)
 #cursor = mysql.connection.cursor()
 
-UPLOAD_FOLDER = '/path/to/the/uploads'
-ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'}
+app.config['UPLOAD_FOLDER'] = '/path/to/the/uploads'
+app.config['ALLOWED_EXTENSIONS'] = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'}
 
 def init_site():
 	print("creating initial subforums")

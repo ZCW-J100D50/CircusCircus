@@ -59,6 +59,7 @@ def action_post():
     if not valid_content(content):
         errors.append("Post must be between 10 and 5000 characters long!")
         retry = True
+    #if not valid_media(filepath)
     #TODO Check for valid image (null image is also valid)
     if retry:
         return render_template("createpost.html",subforum=subforum,  errors=errors)

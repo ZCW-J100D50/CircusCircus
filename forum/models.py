@@ -2,6 +2,7 @@
 # from werkzeug.security import generate_password_hash, check_password_hash
 # from flask_bcrypt import Bcrypt
 import bcrypt
+import filePath
 from flask_login import UserMixin
 import datetime
 
@@ -20,7 +21,7 @@ class User(UserMixin, db.Model):
     admin = db.Column(db.Boolean, default=False)
     posts = db.relationship("Post", backref="user")
     comments = db.relationship("Comment", backref="user")
-    media = db.relationship("Media", backref="user")
+    media = db.relationship("Media", backref="user") #establishes images in relation to the user
 
     def __init__(self, email, username, password):
         self.email = email
@@ -48,7 +49,7 @@ class Post(db.Model):
 
     #cache stuff
     lastcheck = None
-    savedresponce = None
+    savedresponse = None
     def __init__(self, title, content, postdate):
         self.title = title
         self.content = content
@@ -60,24 +61,24 @@ class Post(db.Model):
         if self.lastcheck is None or (now - self.lastcheck).total_seconds() > 30:
             self.lastcheck = now
         else:
-            return self.savedresponce
+            return self.savedresponse
 
         diff = now - self.postdate
 
         seconds = diff.total_seconds()
         print(seconds)
         if seconds / (60 * 60 * 24 * 30) > 1:
-            self.savedresponce =  " " + str(int(seconds / (60 * 60 * 24 * 30))) + " months ago"
+            self.savedresponse = " " + str(int(seconds / (60 * 60 * 24 * 30))) + " months ago"
         elif seconds / (60 * 60 * 24) > 1:
-            self.savedresponce =  " " + str(int(seconds / (60*  60 * 24))) + " days ago"
+            self.savedresponse = " " + str(int(seconds / (60 * 60 * 24))) + " days ago"
         elif seconds / (60 * 60) > 1:
-            self.savedresponce = " " + str(int(seconds / (60 * 60))) + " hours ago"
+            self.savedresponse = " " + str(int(seconds / (60 * 60))) + " hours ago"
         elif seconds / (60) > 1:
-            self.savedresponce = " " + str(int(seconds / 60)) + " minutes ago"
+            self.savedresponse = " " + str(int(seconds / 60)) + " minutes ago"
         else:
-            self.savedresponce =  "Just a moment ago!"
+            self.savedresponse = "Just a moment ago!"
 
-        return self.savedresponce
+        return self.savedresponse
 
 class Subforum(db.Model):
     subID = db.Column(db.Integer, primary_key=True)
@@ -100,7 +101,7 @@ class Comment(db.Model):
     post_id = db.Column(db.Integer, db.ForeignKey("post.postID"))
 
     lastcheck = None
-    savedresponce = None
+    savedresponse = None
     def __init__(self, content, postdate):
         self.content = content
         self.postdate = postdate
@@ -111,21 +112,21 @@ class Comment(db.Model):
         if self.lastcheck is None or (now - self.lastcheck).total_seconds() > 30:
             self.lastcheck = now
         else:
-            return self.savedresponce
+            return self.savedresponse
 
         diff = now - self.postdate
         seconds = diff.total_seconds()
         if seconds / (60 * 60 * 24 * 30) > 1:
-            self.savedresponce =  " " + str(int(seconds / (60 * 60 * 24 * 30))) + " months ago"
+            self.savedresponse = " " + str(int(seconds / (60 * 60 * 24 * 30))) + " months ago"
         elif seconds / (60 * 60 * 24) > 1:
-            self.savedresponce =  " " + str(int(seconds / (60*  60 * 24))) + " days ago"
+            self.savedresponse = " " + str(int(seconds / (60 * 60 * 24))) + " days ago"
         elif seconds / (60 * 60) > 1:
-            self.savedresponce = " " + str(int(seconds / (60 * 60))) + " hours ago"
+            self.savedresponse = " " + str(int(seconds / (60 * 60))) + " hours ago"
         elif seconds / (60) > 1:
-            self.savedresponce = " " + str(int(seconds / 60)) + " minutes ago"
+            self.savedresponse = " " + str(int(seconds / 60)) + " minutes ago"
         else:
-            self.savedresponce = "Just a moment ago!"
-        return self.savedresponce
+            self.savedresponse = "Just a moment ago!"
+        return self.savedresponse
 
 
 #Define media
@@ -167,6 +168,11 @@ def valid_title(title):
     return len(title) > 4 and len(title) < 140
 def valid_content(content):
     return len(content) > 10 and len(content) < 5000
+
+#TODO CHECK what should this input be? Is this right?
+def valid_media(filepath):
+    return filepath.endswith(('txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif', None))
+
 
 
 
