@@ -1,7 +1,7 @@
 from flask_login import current_user, login_user, logout_user
 import datetime
 from flask_login.utils import login_required
-from forum.models import User, Post, Comment, Subforum, valid_content, valid_title, db, generateLinkPath, error
+from forum.models import User, Post, Comment, Subforum, valid_content, valid_title, db, generateLinkPath, error, Media
 from flask import Blueprint, render_template, request, redirect, url_for
 
 
@@ -43,6 +43,7 @@ def action_post():
     user = current_user
     title = request.form['title']
     content = request.form['content']
+    image = request.form['image']
     #check for valid posting
     errors = []
     retry = False
@@ -52,10 +53,20 @@ def action_post():
     if not valid_content(content):
         errors.append("Post must be between 10 and 5000 characters long!")
         retry = True
+    #TODO Check for valid image (null image is also valid)
     if retry:
         return render_template("createpost.html",subforum=subforum,  errors=errors)
     post = Post(title, content, datetime.datetime.now())
+    media = Media()
     subforum.posts.append(post)
     user.posts.append(post)
     db.session.commit()
     return redirect("/viewpost?post=" + str(post.postID))
+
+@login_required
+@posts.route('/media_post', methods=['GET', 'POST'])
+def upload_media():
+    if request.method=='POST':
+        file = request.files['file']
+        return f'Uploaded: {file.filename}'
+    return render_template('index.html')

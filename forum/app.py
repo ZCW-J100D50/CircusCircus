@@ -17,6 +17,7 @@ app.config['MYSQL_USER'] = 'lydia'
 app.config['MYSQL_PASSWORD'] = 'celeste'
 app.config['MYSQL_DB'] = 'flask'
 
+
 mysql = MySQL(app)
 #cursor = mysql.connection.cursor()
 

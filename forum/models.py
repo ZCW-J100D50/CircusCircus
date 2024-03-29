@@ -125,6 +125,22 @@ class Comment(db.Model):
             self.savedresponce =  "Just a moment ago!"
         return self.savedresponce
 
+#Define media
+class Media(db.Model):
+    photoID = db.Column(db.Integer, primary_key=True)
+    photoName = db.Column(db.Text)
+    filepath = db.Column(db.Text)
+    data = db.Column(db.LargeBinary)
+    postdate = db.Column(db.DateTime)
+    userID = db.Column(db.Integer, db.ForeignKey('user.userID'))
+
+    def __init__(self, name, filepath, postdate, userID, data):
+        self.name = name
+        self.filepath = filepath
+        self.postdate = postdate
+        self.userID = userID
+        self.data = data
+
 def error(errormessage):
 	return "<b style=\"color: red;\">" + errormessage + "</b>"
 
@@ -148,4 +164,7 @@ def valid_title(title):
 	return len(title) > 4 and len(title) < 140
 def valid_content(content):
 	return len(content) > 10 and len(content) < 5000
+
+
+
 
