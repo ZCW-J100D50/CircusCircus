@@ -4,7 +4,7 @@ import datetime
 
 db = SQLAlchemy()
 
-class blogposts(db.Model):
+class Blogposts(db.Model):
 
     id = db.Column(db.INTEGER, primary_key=True)
     created = db.Column(db.DateTime)

@@ -1,19 +1,17 @@
 
-from flask import Flask, render_template, request, flash, redirect, url_for
+from flask import render_template
 from flask_login import LoginManager
 from flask_mysqldb import MySQL
 from forum.models import Subforum, db, User
-from werkzeug.middleware.dispatcher import DispatcherMiddleware
 #from frontend_app import application as frontend
-from flask_blog import app1 as blog
 
 #application = DispatcherMiddleware(frontend, {
 #    '/backend': backend
 #})
-from werkzeug.utils import secure_filename
 
 
 from . import create_app
+
 app = create_app()
 
 app.config['SITE_NAME'] = 'Groove Gathering'
