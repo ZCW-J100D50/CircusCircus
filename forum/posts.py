@@ -11,12 +11,12 @@ posts = Blueprint('posts', __name__, template_folder='templates')
 @login_required
 @posts.route('/addpost')
 def addpost():
-	subforum_id = int(request.args.get("sub"))
-	subforum = Subforum.query.filter(Subforum.subID == subforum_id).first()
-	if not subforum:
-		return error("That subforum does not exist!")
+    subforum_id = int(request.args.get("sub"))
+    subforum = Subforum.query.filter(Subforum.subID == subforum_id).first()
+    if not subforum:
+        return error("That subforum does not exist!")
 
-	return render_template("createpost.html", subforum=subforum)
+    return render_template("createpost.html", subforum=subforum)
 
 
 

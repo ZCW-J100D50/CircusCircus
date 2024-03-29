@@ -24,7 +24,6 @@ def index():
 #    posts = my_cursor.fetchall()
 
     posts = Blogposts.query.all()
-
     return render_template('blogindex.html', post=posts)
 
 

@@ -3,17 +3,15 @@
 {% block content %}
     <h1>{% block title %} welcome to FlaskBlog {% endblock %}</h1>
 <h1>What the hecK!</h1>
-	{% for post in blogposts %}
-	<div class="post">
-		<div class="posttitle">
-		<a href="/viewpost?post={{ post.id }}">{{ post.title }}</a>
-		</div>
+    {% for post in blogposts %}
+        <h2>{{ post['title'] }}</h2>
+        <a href="{{ url_for('post', post_id=post['id']) }}"> oh hello there</a>
         <span class="badge badge-primary">{{ post['created'] }}</span>
 	<a href="{{ url_for('edit', id=post['id']) }}">
             <span class="badge badge-warning">Edit</span>
         </a>
+    {%endfor%}
+        <hr>
     </div>
- <hr>
-     {% endfor %}
- {% endblock %}
-<!--        <hr>-->
+
+{% endblock %}

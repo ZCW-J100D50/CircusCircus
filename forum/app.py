@@ -31,7 +31,7 @@ ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'}
 def init_site():
 	print("creating initial subforums")
 	admin = add_subforum("Forum", "Announcements, bug reports, and general discussion about the forum belongs here")
-	add_subforum("Announcements", "View forum announcements here",admin)
+	add_subforum("Announcements", "View forum announcements here", admin)
 	add_subforum("Bug Reports", "Report bugs with the forum here", admin)
 	add_subforum("General Discussion", "Use this subforum to post anything you want")
 	add_subforum("Other", "Discuss other things here")
