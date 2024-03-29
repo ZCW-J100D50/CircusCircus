@@ -2,6 +2,7 @@
 # from werkzeug.security import generate_password_hash, check_password_hash
 # from flask_bcrypt import Bcrypt
 import bcrypt
+#import filePath
 from flask_login import UserMixin
 import datetime
 
@@ -20,6 +21,7 @@ class User(UserMixin, db.Model):
     admin = db.Column(db.Boolean, default=False)
     posts = db.relationship("Post", backref="user")
     comments = db.relationship("Comment", backref="user")
+    media = db.relationship("Media", backref="user") #establishes images in relation to the user
 
     def __init__(self, email, username, password):
         self.email = email
@@ -43,10 +45,11 @@ class Post(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('user.userID'))
     subforum_id = db.Column(db.Integer, db.ForeignKey('subforum.subID'))
     postdate = db.Column(db.DateTime)
+    media = db.relationship("Media", backref="post")
 
     #cache stuff
     lastcheck = None
-    savedresponce = None
+    savedresponse = None
     def __init__(self, title, content, postdate):
         self.title = title
         self.content = content
@@ -58,24 +61,24 @@ class Post(db.Model):
         if self.lastcheck is None or (now - self.lastcheck).total_seconds() > 30:
             self.lastcheck = now
         else:
-            return self.savedresponce
+            return self.savedresponse
 
         diff = now - self.postdate
 
         seconds = diff.total_seconds()
         print(seconds)
         if seconds / (60 * 60 * 24 * 30) > 1:
-            self.savedresponce =  " " + str(int(seconds / (60 * 60 * 24 * 30))) + " months ago"
+            self.savedresponse = " " + str(int(seconds / (60 * 60 * 24 * 30))) + " months ago"
         elif seconds / (60 * 60 * 24) > 1:
-            self.savedresponce =  " " + str(int(seconds / (60*  60 * 24))) + " days ago"
+            self.savedresponse = " " + str(int(seconds / (60 * 60 * 24))) + " days ago"
         elif seconds / (60 * 60) > 1:
-            self.savedresponce = " " + str(int(seconds / (60 * 60))) + " hours ago"
+            self.savedresponse = " " + str(int(seconds / (60 * 60))) + " hours ago"
         elif seconds / (60) > 1:
-            self.savedresponce = " " + str(int(seconds / 60)) + " minutes ago"
+            self.savedresponse = " " + str(int(seconds / 60)) + " minutes ago"
         else:
-            self.savedresponce =  "Just a moment ago!"
+            self.savedresponse = "Just a moment ago!"
 
-        return self.savedresponce
+        return self.savedresponse
 
 class Subforum(db.Model):
     subID = db.Column(db.Integer, primary_key=True)
@@ -98,7 +101,7 @@ class Comment(db.Model):
     post_id = db.Column(db.Integer, db.ForeignKey("post.postID"))
 
     lastcheck = None
-    savedresponce = None
+    savedresponse = None
     def __init__(self, content, postdate):
         self.content = content
         self.postdate = postdate
@@ -109,43 +112,113 @@ class Comment(db.Model):
         if self.lastcheck is None or (now - self.lastcheck).total_seconds() > 30:
             self.lastcheck = now
         else:
-            return self.savedresponce
+            return self.savedresponse
 
         diff = now - self.postdate
         seconds = diff.total_seconds()
         if seconds / (60 * 60 * 24 * 30) > 1:
-            self.savedresponce =  " " + str(int(seconds / (60 * 60 * 24 * 30))) + " months ago"
+            self.savedresponse = " " + str(int(seconds / (60 * 60 * 24 * 30))) + " months ago"
         elif seconds / (60 * 60 * 24) > 1:
-            self.savedresponce =  " " + str(int(seconds / (60*  60 * 24))) + " days ago"
+            self.savedresponse = " " + str(int(seconds / (60 * 60 * 24))) + " days ago"
+        elif seconds / (60 * 60) > 1:
+            self.savedresponse = " " + str(int(seconds / (60 * 60))) + " hours ago"
+        elif seconds / (60) > 1:
+            self.savedresponse = " " + str(int(seconds / 60)) + " minutes ago"
+        else:
+            self.savedresponse = "Just a moment ago!"
+        return self.savedresponse
+
+
+#Define media
+class Media(db.Model):
+    photoID = db.Column(db.Integer, primary_key=True)
+    photoName = db.Column(db.Text)
+    userID = db.Column(db.Integer, db.ForeignKey('user.userID'))
+    filePath = db.Column(db.Text)
+    data = db.Column(db.LargeBinary)
+    post_id = db.Column(db.Integer, db.ForeignKey("post.postID"))
+
+    def __init__(self, name, filepath, data):
+        self.photoName = name
+        self.filePath = filepath
+        self.data = data
+
+
+def error(errormessage):
+    return "<b style=\"color: red;\">" + errormessage + "</b>"
+
+
+def generateLinkPath(subforumid):
+    links = []
+    subforum = Subforum.query.filter(Subforum.subID == subforumid).first()
+    parent = Subforum.query.filter(Subforum.subID == subforum.parent_id).first()
+    links.append("<a href=\"/subforum?sub=" + str(subforum.subID) + "\">" + subforum.title + "</a>")
+    while parent is not None:
+        links.append("<a href=\"/subforum?sub=" + str(parent.subID) + "\">" + parent.title + "</a>")
+        parent = Subforum.query.filter(Subforum.subID == parent.parent_id).first()
+    links.append("<a href=\"/\">Forum Index</a>")
+    link = ""
+    for l in reversed(links):
+        link = link + " / " + l
+    return link
+
+
+#Post checks
+def valid_title(title):
+    return len(title) > 4 and len(title) < 140
+def valid_content(content):
+    return len(content) > 10 and len(content) < 5000
+
+#TODO CHECK what should this input be? Is this right?
+def valid_media(filepath):
+    return filepath.endswith(('txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif', None))
+
+
+
+
+
+
+
+
+class Blogposts(db.Model):
+
+    id = db.Column(db.INTEGER, primary_key=True)
+    created = db.Column(db.DateTime)
+    title = db.Column(db.String(120), nullable=False)
+    content = db.Column(db.String(120), nullable=False)
+
+    lastcheck = None
+    savedresponce = None
+
+    def __init__(self, title, content, created):
+        self.title = title
+        self.content = content
+        self.created = created
+
+    def get_time_string(self):
+        # this only needs to be calculated every so often, not for every request
+        # this can be a rudamentary chache
+        now = datetime.datetime.now()
+
+
+        if self.lastcheck is None or (now - self.lastcheck).total_seconds() > 30:
+            self.lastcheck = now
+        else:
+            return self.savedresponce
+
+        diff = now - self.postdate
+
+        seconds = diff.total_seconds()
+        print(seconds)
+        if seconds / (60 * 60 * 24 * 30) > 1:
+            self.savedresponce = " " + str(int(seconds / (60 * 60 * 24 * 30))) + " months ago"
+        elif seconds / (60 * 60 * 24) > 1:
+            self.savedresponce = " " + str(int(seconds / (60 * 60 * 24))) + " days ago"
         elif seconds / (60 * 60) > 1:
             self.savedresponce = " " + str(int(seconds / (60 * 60))) + " hours ago"
         elif seconds / (60) > 1:
             self.savedresponce = " " + str(int(seconds / 60)) + " minutes ago"
         else:
-            self.savedresponce =  "Just a moment ago!"
+            self.savedresponce = "Just a moment ago!"
+
         return self.savedresponce
-
-def error(errormessage):
-	return "<b style=\"color: red;\">" + errormessage + "</b>"
-
-def generateLinkPath(subforumid):
-	links = []
-	subforum = Subforum.query.filter(Subforum.subID == subforumid).first()
-	parent = Subforum.query.filter(Subforum.subID == subforum.parent_id).first()
-	links.append("<a href=\"/subforum?sub=" + str(subforum.subID) + "\">" + subforum.title + "</a>")
-	while parent is not None:
-		links.append("<a href=\"/subforum?sub=" + str(parent.subID) + "\">" + parent.title + "</a>")
-		parent = Subforum.query.filter(Subforum.subID == parent.parent_id).first()
-	links.append("<a href=\"/\">Forum Index</a>")
-	link = ""
-	for l in reversed(links):
-		link = link + " / " + l
-	return link
-
-
-#Post checks
-def valid_title(title):
-	return len(title) > 4 and len(title) < 140
-def valid_content(content):
-	return len(content) > 10 and len(content) < 5000
-

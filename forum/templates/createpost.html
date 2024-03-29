@@ -9,7 +9,7 @@
 	You are posting to {{ subforum.title }}
 	</div>
 
-	<form action="action_post?sub={{ subforum.subID }}" method="POST">
+	<form action="action_post?sub={{ subforum.subID }}" method="POST" enctype="multipart/form-data">
 
 		<input class="inputbox" size="100" type="text" placeholder="Title" name="title"><br>
 
@@ -17,7 +17,7 @@
 
 		<label for="file-input">Select an image:</label>
 
-		<input type="file" id="file-input" accept=" 'image/*">
+		<input type="file" id="file-input" accept=" 'image/*" name="image">
 
 		<input class="inputbox" type="submit" value="Submit Post">
 	</form>

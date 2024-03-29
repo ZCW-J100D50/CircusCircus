@@ -5,9 +5,9 @@ from forum.auth import auth
 from forum.comments import comments
 from forum.posts import posts
 from forum.subforums import subforums
-from forum.blog import blog
-#from forum.routes import rt
+# from forum.routes import rt
 from os import path
+
 
 def create_app():
     """Construct the core application."""
@@ -16,12 +16,7 @@ def create_app():
     # I think more blueprints might be used to break routes up into things like
     # post_routes
     # subforum_routes
-    # etc
-    app.register_blueprint(auth)
-    app.register_blueprint(comments)
-    app.register_blueprint(posts)
-    app.register_blueprint(subforums)
-    app.register_blueprint(blog)
+    #
     # app.register_blueprint(rt)
     # Set globals
     from forum.models import db
@@ -32,4 +27,3 @@ def create_app():
         if not os.path.exists('forum/circuscircus'):
             db.create_all()
         return app
-
