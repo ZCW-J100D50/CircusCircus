@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<link rel="stylesheet" type="text/css" href="{{url_for('static', filename="bootstrap.min.css")}}">
+	<link rel="stylesheet" type="text/css" href="{{url_for('static', filename="style.css")}}">
+	<title>{{ config.SITE_NAME }}</title>
+</head>
+<body>
+<div class="page">
+	<div class="header">
+		{% include 'header.html' %}
+	</div>
+	{% if errors %}
+	<div class="errors">
+	{% for error in errors %}
+		<p class="error">
+			{{ error }}
+		</p>
+
+	{% endfor %}
+	</div>
+{% endif %}
+	<div class="content">
+		{% block body %}Enjoy our Chat/Messaging tool! <br>
+		In this tool you can: <br>
+		<li>Pick your username</li>
+		<li>Chat in real time with others who are also online.</li>
+		<li><a href="Creating_a_Chat_App_With_Flask-SocketIO/flask_socketio_chat/run.py">CLICK HERE TO OPEN THE CHATTER IN A NEW WINDOW</a></li>
+		<li><a href="http://127.0.0.1:5000/">CLICK HERE TO OPEN THE CHATTER IN A NEW WINDOW</a></li>
+		<li><a href=http://127.0.0.1:5000/>CLICK HERE TO OPEN THE CHATTER IN A NEW WINDOW</a></li>
+	{% endblock %}
+	</div>
+</div>
+</body>
+
+{% extends 'layout.html' %}
+{% block body %}
+
+</div>
+
+{% endblock %}
+
+
+</html>
