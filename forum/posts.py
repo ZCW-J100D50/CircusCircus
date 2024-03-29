@@ -3,6 +3,7 @@ import datetime
 from flask_login.utils import login_required
 from forum.models import User, Post, Comment, Subforum, valid_content, valid_title, db, generateLinkPath, error, Media
 from flask import Blueprint, render_template, request, redirect, url_for
+from base64 import b64encode
 
 
 posts = Blueprint('posts', __name__, template_folder='templates')
@@ -29,7 +30,12 @@ def viewpost():
     if not post.subforum.path:
         subforumpath = generateLinkPath(post.subforum.subID)
     comments = Comment.query.filter(Comment.post_id == postid).order_by(Comment.commentID.desc()) # no need for scalability now
-    return render_template("viewpost.html", post=post, path=subforumpath, comments=comments)
+
+    # Test code to show the image
+    obj = Media.query.filter(Media.photoID == 2).first()
+    image = b64encode(obj.data).decode("utf-8")
+    return render_template("viewpost.html", post=post, path=subforumpath, comments=comments, obj=obj, image=image)
+    #return render_template("viewpost.html", post=post, path=subforumpath, comments=comments)
 
 
 @login_required

@@ -16,6 +16,13 @@
 	<div class="postcontent">
 		{{post.content}}
 	</div>
+	<div>
+		<!-- This div is temporary to test the image.
+		Width should be changed to be controlled by css  -->
+		<p>{{ obj.x }}<br/>
+		{{ obj.y }}</p>
+		<img src="data:;base64,{{ image }}" width="640"/>
+	</div>
 
 </div>
 <div class="addcomment" id="addcomment">
