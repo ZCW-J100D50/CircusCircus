@@ -20,6 +20,7 @@ class User(UserMixin, db.Model):
     admin = db.Column(db.Boolean, default=False)
     posts = db.relationship("Post", backref="user")
     comments = db.relationship("Comment", backref="user")
+    media = db.relationship("Media", backref="user")
 
     def __init__(self, email, username, password):
         self.email = email
@@ -43,6 +44,7 @@ class Post(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('user.userID'))
     subforum_id = db.Column(db.Integer, db.ForeignKey('subforum.subID'))
     postdate = db.Column(db.DateTime)
+    media = db.relationship("Media", backref="post")
 
     #cache stuff
     lastcheck = None
@@ -122,48 +124,49 @@ class Comment(db.Model):
         elif seconds / (60) > 1:
             self.savedresponce = " " + str(int(seconds / 60)) + " minutes ago"
         else:
-            self.savedresponce =  "Just a moment ago!"
+            self.savedresponce = "Just a moment ago!"
         return self.savedresponce
+
 
 #Define media
 class Media(db.Model):
     photoID = db.Column(db.Integer, primary_key=True)
     photoName = db.Column(db.Text)
-    filepath = db.Column(db.Text)
-    data = db.Column(db.LargeBinary)
-    postdate = db.Column(db.DateTime)
     userID = db.Column(db.Integer, db.ForeignKey('user.userID'))
+    filePath = db.Column(db.Text)
+    data = db.Column(db.LargeBinary)
+    post_id = db.Column(db.Integer, db.ForeignKey("post.postID"))
 
-    def __init__(self, name, filepath, postdate, userID, data):
-        self.name = name
-        self.filepath = filepath
-        self.postdate = postdate
-        self.userID = userID
+    def __init__(self, name, filepath, data):
+        self.photoName = name
+        self.filePath = filepath
         self.data = data
 
+
 def error(errormessage):
-	return "<b style=\"color: red;\">" + errormessage + "</b>"
+    return "<b style=\"color: red;\">" + errormessage + "</b>"
+
 
 def generateLinkPath(subforumid):
-	links = []
-	subforum = Subforum.query.filter(Subforum.subID == subforumid).first()
-	parent = Subforum.query.filter(Subforum.subID == subforum.parent_id).first()
-	links.append("<a href=\"/subforum?sub=" + str(subforum.subID) + "\">" + subforum.title + "</a>")
-	while parent is not None:
-		links.append("<a href=\"/subforum?sub=" + str(parent.subID) + "\">" + parent.title + "</a>")
-		parent = Subforum.query.filter(Subforum.subID == parent.parent_id).first()
-	links.append("<a href=\"/\">Forum Index</a>")
-	link = ""
-	for l in reversed(links):
-		link = link + " / " + l
-	return link
+    links = []
+    subforum = Subforum.query.filter(Subforum.subID == subforumid).first()
+    parent = Subforum.query.filter(Subforum.subID == subforum.parent_id).first()
+    links.append("<a href=\"/subforum?sub=" + str(subforum.subID) + "\">" + subforum.title + "</a>")
+    while parent is not None:
+        links.append("<a href=\"/subforum?sub=" + str(parent.subID) + "\">" + parent.title + "</a>")
+        parent = Subforum.query.filter(Subforum.subID == parent.parent_id).first()
+    links.append("<a href=\"/\">Forum Index</a>")
+    link = ""
+    for l in reversed(links):
+        link = link + " / " + l
+    return link
 
 
 #Post checks
 def valid_title(title):
-	return len(title) > 4 and len(title) < 140
+    return len(title) > 4 and len(title) < 140
 def valid_content(content):
-	return len(content) > 10 and len(content) < 5000
+    return len(content) > 10 and len(content) < 5000
 
 
 

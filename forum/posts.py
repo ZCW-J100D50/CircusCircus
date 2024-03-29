@@ -43,7 +43,7 @@ def action_post():
     user = current_user
     title = request.form['title']
     content = request.form['content']
-    image = request.form['image']
+
     #check for valid posting
     errors = []
     retry = False
@@ -57,16 +57,11 @@ def action_post():
     if retry:
         return render_template("createpost.html",subforum=subforum,  errors=errors)
     post = Post(title, content, datetime.datetime.now())
-    media = Media()
     subforum.posts.append(post)
     user.posts.append(post)
+    file = request.files['image']
+    media = Media(file.filename, file.filename, file.read())
+    post.media.append(media)
+    user.media.append(media)
     db.session.commit()
     return redirect("/viewpost?post=" + str(post.postID))
-
-@login_required
-@posts.route('/media_post', methods=['GET', 'POST'])
-def upload_media():
-    if request.method=='POST':
-        file = request.files['file']
-        return f'Uploaded: {file.filename}'
-    return render_template('index.html')

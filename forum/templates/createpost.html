@@ -9,7 +9,7 @@
 	You are posting to {{ subforum.title }}
 	</div>
 
-	<form action="action_post?sub={{ subforum.subID }}" method="POST">
+	<form action="action_post?sub={{ subforum.subID }}" method="POST" enctype="multipart/form-data">
 
 		<input class="inputbox" size="100" type="text" placeholder="Title" name="title"><br>
 
