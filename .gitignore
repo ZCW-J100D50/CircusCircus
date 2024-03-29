@@ -144,5 +144,4 @@ cython_debug/
 .static/media
 
 #putting the config.py here at the end like @Deepa also does
-.getignore/
-.getignore
+.config.py
