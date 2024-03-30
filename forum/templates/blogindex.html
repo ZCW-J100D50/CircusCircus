@@ -1,10 +1,10 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <h1>{% block title %} welcome to FlaskBlog {% endblock %}</h1>
-    {%for item in post%}
-        <h2>{{ item.title }}</h2>
-        <a href='/blog/<int:post_id>'> {{item.content}}</a>
+    <h1 class="header"> Syncopation Station </h1>
+    {%for i in range(post|length-1,0,-1)%}
+        <h2><a href='/blog/<int:post_id>'>{{ post[i].title }}</a></h2>
+        {{post[i].content}}
         <span class="badge badge-primary">{{ post['created'] }}</span>
 	<a href="/blog/<int:id>/edit">
             <span class="badge badge-warning">Edit</span>

@@ -1,22 +1,14 @@
 <!doctype html>
 <html lang="en">
   <head>
-    <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1,
-shrink-to-fit=no">
-
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet"
-href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
-integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
-crossorigin="anonymous">
+<link rel="stylesheet" type="text/css" href="{{url_for('static', filename="bootstrap.min.css")}}">
+	<link rel="stylesheet" type="text/css" href="{{url_for('static', filename="style.css")}}">
 
     <title>{% block title %} {% endblock %}</title>
   </head>
   <body>
     <nav class="navbar navbar-expand-md navbar-light bg-light">
-        <a class="navbar-brand" href="/">Groove</a>
+        <a class="navbar-brand" href="/blog">FlaskBlog</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" 
 data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" 
 aria-label="Toggle navigation">

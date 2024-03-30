@@ -184,8 +184,8 @@ class Blogposts(db.Model):
 
     id = db.Column(db.INTEGER, primary_key=True)
     created = db.Column(db.DateTime)
-    title = db.Column(db.String(120), nullable=False)
-    content = db.Column(db.String(120), nullable=False)
+    title = db.Column(db.String(255), nullable=False)
+    content = db.Column(db.String(500), nullable=False)
 
     lastcheck = None
     savedresponce = None

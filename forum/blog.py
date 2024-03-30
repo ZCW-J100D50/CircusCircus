@@ -1,6 +1,8 @@
+import datetime
+
 from flask import render_template, request, flash, redirect, url_for, Blueprint
 #from forum.app import app
-from forum.models import Blogposts
+from forum.models import Blogposts, db
 
 blog = Blueprint('blog', __name__, template_folder='templates')
 #SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://chrism:lesson@localhost/circuscircus'
@@ -38,16 +40,16 @@ def create():
     if request.method == 'POST':
         title = request.form['title']
         content = request.form['content']
-      #  {{url_for('createblogpost')}}
+        blog = Blogposts(title, content, datetime.datetime.now())
         if not title:
             flash('Title is required!')
         else:
-            pass
-            # my_cursor.execute('INSERT INTO blogposts (title, content) VALUES (%s, %s)',  (title, content))
-            # mydb.commit()
-            # return redirect(url_for('index'))
-
+            db.session.add(blog)
+            db.session.commit()
+            return redirect('/blog')
     return render_template('createblogpost.html')
+
+
 
 
 @blog.route('/blog/<int:id>/edit', methods=('GET', 'POST'))
@@ -57,16 +59,13 @@ def edit(id):
     if request.method == 'POST':
         title = request.form['title']
         content = request.form['content']
-
+        entry = Blogposts(title, content, datetime.datetime.now())
         if not title:
             flash('Title is required!')
         else:
-            pass
-            # get_db_connection()
-            # my_cursor.execute('UPDATE blogposts SET title = %s, content = %s, WHERE id = %d', (title, content, id))
-            # mydb.commit()
-
-            #return redirect(url_for('index'))
+            db.session.add(entry)
+            db.session.commit()
+            redirect('/blog')
 
     return render_template('edit.html', post=post)
 
