@@ -1,3 +1,6 @@
+import os
+from pathlib import Path
+
 from flask_login import current_user, login_user, logout_user
 import datetime
 from flask_login.utils import login_required
@@ -32,10 +35,26 @@ def viewpost():
     comments = Comment.query.filter(Comment.post_id == postid).order_by(Comment.commentID.desc()) # no need for scalability now
 
     # Test code to show the image
-    obj = Media.query.filter(Media.photoID == 2).first()
-    image = b64encode(obj.data).decode("utf-8")
-    return render_template("viewpost.html", post=post, path=subforumpath, comments=comments, obj=obj, image=image)
-    #return render_template("viewpost.html", post=post, path=subforumpath, comments=comments)
+    media = Media.query.filter(Media.post_id == postid).first()
+    if media is None:
+        return render_template("viewpost.html", post=post, path=subforumpath,
+                               comments=comments)
+    if media.mediaType == 'image':
+        filepath = media.filePath
+        return render_template("viewpost_withimage.html", post=post, path=subforumpath,
+                               comments=comments, media_filepath=filepath)
+    if media.mediaType == 'video':
+        filepath = media.filePath
+        return render_template("viewpost_withvideo.html", post=post, path=subforumpath,
+                               comments=comments, media_filepath=filepath)
+    # TODO: Handle case where mediaType is not image or video for some reason
+
+    # obj = Media.query.filter(Media.post_id == postid).first()
+    # if obj != None:
+    #     image = b64encode(obj.data).decode("utf-8")
+    #     return render_template("viewpost_withimage.html", post=post, path=subforumpath, comments=comments, obj=obj, image=image)
+    # else:
+    #     return render_template("viewpost.html", post=post, path=subforumpath, comments=comments)
 
 
 @login_required
@@ -59,16 +78,35 @@ def action_post():
     if not valid_content(content):
         errors.append("Post must be between 10 and 5000 characters long!")
         retry = True
-    #if not valid_media(filepath)
-    #TODO Check for valid image (null image is also valid)
     if retry:
         return render_template("createpost.html",subforum=subforum,  errors=errors)
     post = Post(title, content, datetime.datetime.now())
     subforum.posts.append(post)
     user.posts.append(post)
+
     file = request.files['image']
-    media = Media(file.filename, file.filename, file.read())
-    post.media.append(media)
-    user.media.append(media)
+    basedir = os.path.abspath(os.path.dirname(__file__))
+    media_is_valid = False
+    upload_filepath = None
+    saved_filepath = None
+    media_type = None
+    saved_filename = f'{post.postID}_{file.filename}'.replace(" ","_")
+    if Path(file.filename).suffix in ['.mov', '.mp4']:
+        upload_filepath = os.path.join(basedir, 'static/user_media/videos', saved_filename)
+        saved_filepath = os.path.join('static/user_media/videos', saved_filename)
+        media_type = 'video'
+        media_is_valid = True
+    elif Path(file.filename).suffix in ['.jpeg', '.jpg', '.png', '.bmp']:
+        upload_filepath = os.path.join(basedir, 'static/user_media/images', saved_filename)
+        saved_filepath = os.path.join('static/user_media/images', saved_filename)
+        media_type = 'image'
+        media_is_valid = True
+    else:
+        pass
+    if media_is_valid:
+        file.save(upload_filepath)
+        media = Media(file.filename, saved_filepath, media_type)
+        post.media.append(media)
+        user.media.append(media)
     db.session.commit()
     return redirect("/viewpost?post=" + str(post.postID))
