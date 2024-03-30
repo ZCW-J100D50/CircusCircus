@@ -25,13 +25,13 @@ def index():
 #   my_cursor.execute('SELECT * FROM blogposts')
 #    posts = my_cursor.fetchall()
 
-    posts = Blogposts.query.all()
+    posts = Blogposts.query.order_by(Blogposts.id)
     return render_template('blogindex.html', posts=posts)
 
 #{{ url_for('post', post_id=post['id']) }}
-@blog.route('/blog/<int:post_id>')
+@blog.route('/blog/index/<int:post_id>')
 def post(post_id):
-    posts = Blogposts.query.filter(id=post_id)
+    posts = Blogposts.query.get_or_404(post_id)
     return render_template('blogpost.html', post=posts)
 
 
@@ -54,20 +54,21 @@ def create():
 
 @blog.route('/blog/<int:id>/edit', methods=('GET', 'POST'))
 def edit(id):
-    post = Blogposts.query.filter(id=id)
-
-    if request.method == 'POST':
-        title = request.form['title']
-        content = request.form['content']
-        entry = Blogposts(title, content, datetime.datetime.now())
-        if not title:
-            flash('Title is required!')
-        else:
-            db.session.add(entry)
-            db.session.commit()
-            redirect('/blog')
-
-    return render_template('edit.html', post=post)
+    pass
+    # post = Blogposts.query.filter(id=id)
+    #
+    # if request.method == 'POST':
+    #     title = request.form['title']
+    #     content = request.form['content']
+    #     entry = Blogposts(title, content, datetime.datetime.now())
+    #     if not title:
+    #         flash('Title is required!')
+    #     else:
+    #         db.session.add(entry)
+    #         db.session.commit()
+    #         redirect('/blog')
+    #
+    # return render_template('edit.html', post=post)
 
 
 

@@ -3,7 +3,7 @@
 {% block content %}
     <h1 class="header"> Syncopation Station </h1>
     {%for post in posts%}
-        <h2><a href='/blog/<int:post_id>'>{{ post.title }}</a></h2>
+        <h2><a href="{{ url_for('blog.post', post_id=post.id) }}">{{ post.title }}</a></h2>
         {{post.content}}
         <span class="badge badge-primary">{{ post.created }}</span>
 	<a href="/blog/<int:id>/edit">
@@ -11,6 +11,5 @@
         </a>
     {%endfor%}
         <hr>
-    </div>
 
 {% endblock %}
