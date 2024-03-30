@@ -7,22 +7,22 @@
 		<a href="/viewpost?post={{ post.postID }}">{{post.title}}</a>
 		<div class="postposter" {% if post.user.admin %} style="color: red;" {% endif %}>
 			{{ post.user.username }}
-
 		</div>
 		<div class="posttime">
 			{{ post.get_time_string() }}
 		</div>
 	</div>
-	<div class="postcontent">
-		{{post.content}}
-	</div>
-	<div>
+	<div class="postimage">
 		<!-- This div is temporary to test the image.
 		Width should be changed to be controlled by css  -->
 		<p>{{ obj.x }}<br/>
 		{{ obj.y }}</p>
 		<img src="data:;base64,{{ image }}" width="640"/>
 	</div>
+	<div class="postcontent">
+		{{post.content}}
+	</div>
+
 
 </div>
 <div class="addcomment" id="addcomment">
@@ -60,23 +60,11 @@
 	</div>
 	<br>
 
-	#user image upload
+
 {% endfor %}
 </div>
 {% endif %}
 <script type="text/javascript">
-	const input = document.getElementById('file-input');
-	const preview = document.getElementById('preview');
-
-	input.addEventListener('change', () => {
-	const reader = FileReader();
-	reader.onload = () => {
-	preview.src = reader.result;
-	};
-	reader.readAsDataURL(input.files[0]);
-	});
-
-
 function toggle(){
 	var div = document.getElementById("addcomment");
 	var button = document.getElementById("displayaddcomment")

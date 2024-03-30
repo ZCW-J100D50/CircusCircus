@@ -147,6 +147,11 @@
 .postcontent{
 	padding: 1%;
 }
+.postimage{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
 .postposter{
 	font-size: 12pt;
 	font-style: italic;
