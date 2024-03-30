@@ -26,7 +26,7 @@ app.config['FLASK_DEBUG'] = 1
 mysql = MySQL(app)
 #cursor = mysql.connection.cursor()
 
-app.config['UPLOAD_FOLDER'] = '/path/to/the/uploads'
+app.config['UPLOAD_FOLDER'] = '/static/user_media/'
 app.config['ALLOWED_EXTENSIONS'] = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'}
 
 def init_site():
