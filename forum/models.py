@@ -135,13 +135,13 @@ class Media(db.Model):
     photoName = db.Column(db.Text)
     userID = db.Column(db.Integer, db.ForeignKey('user.userID'))
     filePath = db.Column(db.Text)
-    data = db.Column(db.LargeBinary)
+    mediaType = db.Column(db.Text)
     post_id = db.Column(db.Integer, db.ForeignKey("post.postID"))
 
-    def __init__(self, name, filepath, data):
+    def __init__(self, name, filepath, media_type):
         self.photoName = name
         self.filePath = filepath
-        self.data = data
+        self.mediaType = media_type
 
 
 def error(errormessage):

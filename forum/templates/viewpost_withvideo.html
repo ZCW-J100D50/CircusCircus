@@ -12,9 +12,10 @@
 			{{ post.get_time_string() }}
 		</div>
 	</div>
-	<div class="postimage">
-<!--		<img src="data:;base64,{{ image }}" width="640"/>-->
-		<img src={{ media_filepath }} width="640"/>
+	<div class="postvideo">
+		<video controls width="640">
+			<source src={{ media_filepath }}  type="video/mp4"/>
+		</video>
 	</div>
 	<div class="postcontent">
 		{{post.content}}

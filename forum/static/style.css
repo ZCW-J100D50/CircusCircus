@@ -149,6 +149,12 @@
 }
 .postimage{
     display: flex;
+    height: auto;
+    justify-content: center;
+    align-items: center;
+}
+.postvideo{
+    display: flex;
     justify-content: center;
     align-items: center;
 }
