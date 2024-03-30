@@ -1,5 +1,4 @@
 import datetime
-
 from flask import render_template, request, flash, redirect, url_for, Blueprint
 #from forum.app import app
 from forum.models import Blogposts, db
@@ -52,34 +51,42 @@ def create():
 
 
 
-@blog.route('/blog/<int:id>/edit', methods=('GET', 'POST'))
-def edit(id):
-    pass
-    # post = Blogposts.query.filter(id=id)
-    #
-    # if request.method == 'POST':
-    #     title = request.form['title']
-    #     content = request.form['content']
-    #     entry = Blogposts(title, content, datetime.datetime.now())
-    #     if not title:
-    #         flash('Title is required!')
-    #     else:
-    #         db.session.add(entry)
-    #         db.session.commit()
-    #         redirect('/blog')
-    #
-    # return render_template('edit.html', post=post)
+@blog.route('/blog/edit/<int:post_id>', methods=('GET', 'POST'))
+def edit(post_id):
+    post = Blogposts.query.get_or_404(post_id)
+    if request.method == 'POST':
+        title = request.form['title']
+        content = request.form['content']
+        entry = Blogposts(title, content, datetime.datetime.now())
+        if not title:
+            flash('Title is required!')
+        else:
+            post.title = title
+            post.content = content
+            post.created = datetime.datetime.now()
+            db.session.add(post)
+            db.session.commit()
+        return redirect('/blog')
+
+    return render_template('edit.html', post=post)
 
 
 
-@blog.route('/blog/<int:id>/delete', methods=('POST',))
-def delete(id):
-    post = Blogposts.query.filter(id=id)
+@blog.route('/index/delete/<int:post_id>/', methods=('POST',))
+def delete(post_id):
+    post_to_delete = Blogposts.query.get_or_404(post_id)
+    try:
+        db.session.delete(post_to_delete)
+        db.session.commit()
+        flash("Entry Deleted")
+        return redirect('/blog')
+    except:
+        pass
     # get_db_connection()
     # my_cursor.execute('DELETE FROM blogposts WHERE id = %d', (id,))
     # mydb.commit()
     # flash('"{}" was successfully deleted!'.format(post['title']))
-    return redirect(url_for('index'))
+
 
 
 

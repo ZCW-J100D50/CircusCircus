@@ -1,11 +1,11 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <h1 class="header"> Syncopation Station </h1>
+    <a href="/blog/"><h1 class="header"> Syncopation Station </h1></a>
         <h2>{{ post.title }}</h2>
         {{post.content}}
         <span class="badge badge-primary">{{ post.created }}</span>
-	<a href="/blog/<int:id>/edit">
+	<a href="{{ url_for('blog.edit', post_id=post.id) }}">
             <span class="badge badge-warning">Edit</span>
         </a>
         <hr>
