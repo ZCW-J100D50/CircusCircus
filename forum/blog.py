@@ -26,13 +26,13 @@ def index():
 #    posts = my_cursor.fetchall()
 
     posts = Blogposts.query.all()
-    return render_template('blogindex.html', post=posts)
+    return render_template('blogindex.html', posts=posts)
 
 #{{ url_for('post', post_id=post['id']) }}
 @blog.route('/blog/<int:post_id>')
 def post(post_id):
     posts = Blogposts.query.filter(id=post_id)
-    return render_template('post.html', post=posts)
+    return render_template('blogpost.html', post=posts)
 
 
 @blog.route('/blog/create', methods=('GET', 'POST'))

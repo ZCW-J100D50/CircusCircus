@@ -2,10 +2,10 @@
 
 {% block content %}
     <h1 class="header"> Syncopation Station </h1>
-    {%for i in range(post|length-1,0,-1)%}
-        <h2><a href='/blog/<int:post_id>'>{{ post[i].title }}</a></h2>
-        {{post[i].content}}
-        <span class="badge badge-primary">{{ post['created'] }}</span>
+    {%for post in posts%}
+        <h2><a href='/blog/<int:post_id>'>{{ post.title }}</a></h2>
+        {{post.content}}
+        <span class="badge badge-primary">{{ post.created }}</span>
 	<a href="/blog/<int:id>/edit">
             <span class="badge badge-warning">Edit</span>
         </a>
