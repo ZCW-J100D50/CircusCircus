@@ -16,6 +16,13 @@
 	<div class="postcontent">
 		{{post.content}}
 	</div>
+	<div>
+		<!-- This div is temporary to test the image.
+		Width should be changed to be controlled by css  -->
+		<p>{{ obj.x }}<br/>
+		{{ obj.y }}</p>
+		<img src="data:;base64,{{ image }}" width="640"/>
+	</div>
 
 </div>
 <div class="addcomment" id="addcomment">
@@ -26,7 +33,7 @@
 </div>
 <div style="text-align: center;">
 
-	
+
 
 	{% if current_user.is_authenticated %}
 	<input type="button" id="displayaddcomment" onclick="toggle()" value="Add a comment">
@@ -38,26 +45,38 @@
 {%if comments%}
 <div class="comments">
 {% for comment in comments %}
-	
+
 	<div class="comment">
 		<div class="commentuser">
-			(<span  {% if comment.user.admin %} style="color: red;" {% endif %}>{{ comment.user.username }}</span>) - 
+			(<span  {% if comment.user.admin %} style="color: red;" {% endif %}>{{ comment.user.username }}</span>) -
 		</div>
 		<div class="commentcontent">
 			{{ comment.content }}
 		</div>
-		
+
 		<div class="commenttime">
 			{{ comment.get_time_string() }}
 		</div>
 	</div>
 	<br>
 
-
+	#user image upload
 {% endfor %}
 </div>
 {% endif %}
 <script type="text/javascript">
+	const input = document.getElementById('file-input');
+	const preview = document.getElementById('preview');
+
+	input.addEventListener('change', () => {
+	const reader = FileReader();
+	reader.onload = () => {
+	preview.src = reader.result;
+	};
+	reader.readAsDataURL(input.files[0]);
+	});
+
+
 function toggle(){
 	var div = document.getElementById("addcomment");
 	var button = document.getElementById("displayaddcomment")
@@ -68,7 +87,7 @@ function toggle(){
 		div.style.display = "none";
 		button.value="Add a comment"
 	}
-	
+
 }
 </script>
 

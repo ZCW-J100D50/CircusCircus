@@ -32,10 +32,12 @@ def viewpost():
     comments = Comment.query.filter(Comment.post_id == postid).order_by(Comment.commentID.desc()) # no need for scalability now
 
     # Test code to show the image
-    obj = Media.query.filter(Media.photoID == 2).first()
-    image = b64encode(obj.data).decode("utf-8")
-    return render_template("viewpost.html", post=post, path=subforumpath, comments=comments, obj=obj, image=image)
-    #return render_template("viewpost.html", post=post, path=subforumpath, comments=comments)
+    obj = Media.query.filter(Media.post_id == postid).first()
+    if obj != None:
+        image = b64encode(obj.data).decode("utf-8")
+        return render_template("viewpost_withimage.html", post=post, path=subforumpath, comments=comments, obj=obj, image=image)
+    else:
+        return render_template("viewpost.html", post=post, path=subforumpath, comments=comments)
 
 
 @login_required
