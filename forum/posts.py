@@ -64,17 +64,13 @@ def action_post():
     subforum = Subforum.query.filter(Subforum.subID == subforum_id).first()
     if not subforum:
         return redirect(url_for("subforums"))
-    count = 0
     privacy = 0
     user = current_user
     title = request.form['title']
     content = request.form['content']
     if 'private' in request.form:
-        count += 1
-        if not count % 2 == 0:
-            privacy = 1
-        else:
-            privacy = 0
+        privacy = 1
+
 
 
 
