@@ -22,7 +22,7 @@ class User(UserMixin, db.Model):
     posts = db.relationship("Post", backref="user")
     comments = db.relationship("Comment", backref="user")
     media = db.relationship("Media", backref="user") #establishes images in relation to the user
-    liked = db.relationship('Post Like', Foreign_keys)
+    liked = db.relationship('React', db.ForeignKey("React.userID"), backref="user", lazy= "dynamic")
 
     def __init__(self, email, username, password):
         self.email = email
@@ -37,6 +37,19 @@ class User(UserMixin, db.Model):
 
     def get_id(self):
         return str(self.userID)
+
+    def react_to_post(self, post):
+        if not self.has_reacted_post(post):
+            react = React(userID = self.id, post_id=post.id)
+            db.session.add(react)
+
+    def undo_react_to_post(self, post):
+        if self.has_reacted_post(post):
+            React.query.filter_by(userID = self.id, post_id = post.id).delete()
+
+    def has_reacted_to_post(self, post):
+            return React.query.filter(React.userID == self.id, React.post_id == post.id).count() > 0
+
     
 class Post(db.Model):
     postID = db.Column(db.Integer, primary_key=True)

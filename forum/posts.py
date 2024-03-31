@@ -1,6 +1,6 @@
 import os
 from pathlib import Path
-from Flask-SQLAlchemy import and_
+from flask_sqlalchemy import and_
 from flask_login import current_user, login_user, logout_user
 import datetime
 from flask_login.utils import login_required
