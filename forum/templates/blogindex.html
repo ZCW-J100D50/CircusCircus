@@ -5,6 +5,8 @@
     {%for post in posts%}
         <h2><a href="{{ url_for('blog.post', post_id=post.id) }}">{{ post.title }}</a></h2>
         {{post.content}}
+        <br>
+        <br>
         <span class="badge badge-primary">{{ post.created }}</span>
 	<a href="{{ url_for('blog.edit', post_id=post.id) }}">
             <span class="badge badge-warning">Edit</span>

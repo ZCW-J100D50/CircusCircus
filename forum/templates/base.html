@@ -32,13 +32,18 @@ aria-label="Toggle navigation">
             </li>
             </ul>
         </div>
-    </nav>
+    </nav> <br>
     <div class="container">
         {% for message in get_flashed_messages() %}
             <div class="alert alert-danger">{{ message }}</div>
         {% endfor %}
         {% block content %} {% endblock %}
     </div>
+
+    <div class="footer">
+        <p>{% include 'footer.html' %}</p>
+	</div>
+
 
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->

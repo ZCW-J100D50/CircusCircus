@@ -64,10 +64,19 @@ def action_post():
     subforum = Subforum.query.filter(Subforum.subID == subforum_id).first()
     if not subforum:
         return redirect(url_for("subforums"))
-
+    count = 0
+    privacy = 0
     user = current_user
     title = request.form['title']
     content = request.form['content']
+    if 'private' in request.form:
+        count += 1
+        if not count % 2 == 0:
+            privacy = 1
+        else:
+            privacy = 0
+
+
 
     #check for valid posting
     errors = []
@@ -80,7 +89,8 @@ def action_post():
         retry = True
     if retry:
         return render_template("createpost.html",subforum=subforum,  errors=errors)
-    post = Post(title, content, datetime.datetime.now())
+
+    post = Post(title, content, datetime.datetime.now(), is_private=privacy)
     subforum.posts.append(post)
     user.posts.append(post)
 
@@ -110,3 +120,4 @@ def action_post():
         user.media.append(media)
     db.session.commit()
     return redirect("/viewpost?post=" + str(post.postID))
+

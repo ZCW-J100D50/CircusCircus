@@ -46,14 +46,16 @@ class Post(db.Model):
     subforum_id = db.Column(db.Integer, db.ForeignKey('subforum.subID'))
     postdate = db.Column(db.DateTime)
     media = db.relationship("Media", backref="post")
+    is_private = db.Column(db.Boolean)
 
     #cache stuff
     lastcheck = None
     savedresponse = None
-    def __init__(self, title, content, postdate):
+    def __init__(self, title, content, postdate,is_private):
         self.title = title
         self.content = content
         self.postdate = postdate
+        self.is_private = is_private
     def get_time_string(self):
         #this only needs to be calculated every so often, not for every request
         #this can be a rudamentary chache
@@ -137,6 +139,7 @@ class Media(db.Model):
     filePath = db.Column(db.Text)
     mediaType = db.Column(db.Text)
     post_id = db.Column(db.Integer, db.ForeignKey("post.postID"))
+
 
     def __init__(self, name, filepath, media_type):
         self.photoName = name
