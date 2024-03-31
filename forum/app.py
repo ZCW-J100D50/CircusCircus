@@ -24,6 +24,13 @@ mysql = MySQL(app)
 app.config['UPLOAD_FOLDER'] = '/path/to/the/uploads'
 app.config['ALLOWED_EXTENSIONS'] = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'}
 
+
+
+
+@app.template_filter('emojify')
+def emoji_filter(s):
+    return emoji.emojize(s)
+	#emoji code ends
 def init_site():
 	print("creating initial subforums")
 	admin = add_subforum("Forum", "Announcements, bug reports, and general discussion about the forum belongs here")

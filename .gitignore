@@ -143,3 +143,5 @@ cython_debug/
 
 #images for website
 .static/media
+
+config.py
