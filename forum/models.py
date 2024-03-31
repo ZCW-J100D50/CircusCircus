@@ -22,6 +22,7 @@ class User(UserMixin, db.Model):
     posts = db.relationship("Post", backref="user")
     comments = db.relationship("Comment", backref="user")
     media = db.relationship("Media", backref="user") #establishes images in relation to the user
+    liked = db.relationship('Post Like', Foreign_keys)
 
     def __init__(self, email, username, password):
         self.email = email
@@ -142,6 +143,16 @@ class Media(db.Model):
         self.photoName = name
         self.filePath = filepath
         self.mediaType = media_type
+
+
+class React(db.Model):
+    reactID = db.Column(db.Integer, primary_key=True)
+    reactType = db.Column(db.Text)
+    userID = db.Column(db.Integer, db.ForeignKey('user.userID'))
+    post_id = db.Column(db.Integer, db.ForeignKey("post.postID"))
+
+    def __init__(self, reactType):
+        self.reactType = reactType
 
 
 def error(errormessage):

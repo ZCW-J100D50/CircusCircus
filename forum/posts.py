@@ -1,10 +1,11 @@
 import os
 from pathlib import Path
-
+from Flask-SQLAlchemy import and_
 from flask_login import current_user, login_user, logout_user
 import datetime
 from flask_login.utils import login_required
-from forum.models import User, Post, Comment, Subforum, valid_content, valid_title, db, generateLinkPath, error, Media
+from forum.models import User, Post, Comment, Subforum, valid_content, valid_title, db, generateLinkPath, error, Media, \
+    React
 from flask import Blueprint, render_template, request, redirect, url_for
 from base64 import b64encode
 
@@ -34,19 +35,46 @@ def viewpost():
         subforumpath = generateLinkPath(post.subforum.subID)
     comments = Comment.query.filter(Comment.post_id == postid).order_by(Comment.commentID.desc()) # no need for scalability now
 
+    #TODO Get reaction count from database
+    # THis will look something like: fire_count = len(React.query.filter(React.postID == postid && React.reactType == "fire"))
+    # thumbsup_count = 5
+    # heart_count = 7
+    # fire_count = 1775
+    # music_count = 135
+
+
+    thumbsup_count = len(React.query.filter(and_(React.postID == postid, React.reactType == "thumbsup"))).count()
+    heart_count = len(React.query.filter(and_(React.postID == postid, React.reactType == "heart"))).count()
+    fire_count = len(React.query.filter(and_(React.postID == postid, React.reactType == "fire"))).count()
+    music_count = len(React.query.filter(and_(React.postID == postid, React.reactType == "music"))).count()
+
+
     # Test code to show the image
     media = Media.query.filter(Media.post_id == postid).first()
     if media is None:
         return render_template("viewpost.html", post=post, path=subforumpath,
-                               comments=comments)
+                               comments=comments,
+                               thumbsup_count=thumbsup_count, heart_count=heart_count,
+                               fire_count=fire_count, music_count=music_count)
     if media.mediaType == 'image':
         filepath = media.filePath
         return render_template("viewpost_withimage.html", post=post, path=subforumpath,
-                               comments=comments, media_filepath=filepath)
+                               comments=comments, media_filepath=filepath,
+                               thumbsup_count=thumbsup_count, heart_count=heart_count,
+                               fire_count=fire_count, music_count=music_count)
     if media.mediaType == 'video':
         filepath = media.filePath
         return render_template("viewpost_withvideo.html", post=post, path=subforumpath,
-                               comments=comments, media_filepath=filepath)
+                               comments=comments, media_filepath=filepath,
+                               thumbsup_count=thumbsup_count, heart_count=heart_count,
+                               fire_count=fire_count, music_count=music_count)
+
+    # react = bool(request.args.get("react"))
+    # react_highlight = React.query.filter,
+    # if values on a line in the user id, post id, and react table are all matching,
+    # the appropriate react button stays highlighted for the user looking at the page.
+
+
     # TODO: Handle case where mediaType is not image or video for some reason
 
     # obj = Media.query.filter(Media.post_id == postid).first()
@@ -85,6 +113,10 @@ def action_post():
     user.posts.append(post)
 
     file = request.files['image']
+
+    #TODO: Improve handling of filepath - currently using separate 'upload' and 'saved'
+    # because could only get file.save() to work with absolute path.
+    # Proper way seems to use app.config['UPLOAD_FOLDER'] but haven't gotten that to work yet
     basedir = os.path.abspath(os.path.dirname(__file__))
     media_is_valid = False
     upload_filepath = None
