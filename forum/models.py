@@ -5,12 +5,15 @@ import bcrypt
 #import filePath
 from flask_login import UserMixin
 import datetime
+from sqlalchemy import and_
 
 # create db here so it can be imported (with the models) into the App object.
 from flask_sqlalchemy import SQLAlchemy
 
 db = SQLAlchemy()
 # bcrypt = Bcrypt()
+
+ReactTypes = ['thumbsup', 'music', 'fire', 'heart']
 
 #OBJECT MODELS
 class User(UserMixin, db.Model):
@@ -22,6 +25,7 @@ class User(UserMixin, db.Model):
     posts = db.relationship("Post", backref="user")
     comments = db.relationship("Comment", backref="user")
     media = db.relationship("Media", backref="user") #establishes images in relation to the user
+    reacts = db.relationship('React', backref="user", lazy= "dynamic")
 
     def __init__(self, email, username, password):
         self.email = email
@@ -36,17 +40,47 @@ class User(UserMixin, db.Model):
 
     def get_id(self):
         return str(self.userID)
+
+    def react_to_post(self, post, reactType):
+        user_post_reacts = self.current_reacts_to_post(post)
+        # Get blank slate
+        React.query.filter(and_(React.userID == self.userID,
+                                React.postID == post.postID)).delete()
+        # Handle apply new reaction
+        if user_post_reacts[reactType] is False:
+            react = React(reactType)
+            post.reacts.append(react)
+            self.reacts.append(react)
+        db.session.commit()
+        return
+
+
+    def current_reacts_to_post(self, post):
+        user_post_reacts = {}
+        for reactType in ReactTypes:
+            user_post_reacts[reactType] = False
+        for reactType in ReactTypes:
+            reaction_count = React.query.filter(and_(React.userID == self.userID,
+                                                    React.postID == post.postID,
+                                                    React.reactType == reactType)).count()
+            if reaction_count == 1:
+                user_post_reacts[reactType] = True
+            # else:
+            #     user_post_reacts[reactType] = False
+        return user_post_reacts
+
     
 class Post(db.Model):
     postID = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.Text)
     content = db.Column(db.Text)
     comments = db.relationship("Comment", backref="post")
-    user_id = db.Column(db.Integer, db.ForeignKey('user.userID'))
+    user_id = db.Column(db.Integer, db.ForeignKey('user.userID')) #would this be more readable as authorID?
     subforum_id = db.Column(db.Integer, db.ForeignKey('subforum.subID'))
     postdate = db.Column(db.DateTime)
     media = db.relationship("Media", backref="post")
     is_private = db.Column(db.Boolean)
+    reacts = db.relationship('React', backref="post", lazy="dynamic")
 
     #cache stuff
     lastcheck = None
@@ -147,6 +181,16 @@ class Media(db.Model):
         self.mediaType = media_type
 
 
+class React(db.Model):
+    reactID = db.Column(db.Integer, primary_key=True)
+    reactType = db.Column(db.Text)
+    userID = db.Column(db.Integer, db.ForeignKey('user.userID'))
+    postID = db.Column(db.Integer, db.ForeignKey("post.postID"))
+
+    def __init__(self, reactType):
+        self.reactType = reactType
+
+
 def error(errormessage):
     return "<b style=\"color: red;\">" + errormessage + "</b>"
 
@@ -171,8 +215,6 @@ def valid_title(title):
     return len(title) > 4 and len(title) < 140
 def valid_content(content):
     return len(content) > 10 and len(content) < 5000
-
-#TODO CHECK what should this input be? Is this right?
 def valid_media(filepath):
     return filepath.endswith(('txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif', None))
 

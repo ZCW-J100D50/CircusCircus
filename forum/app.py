@@ -1,8 +1,8 @@
 
-from flask import render_template
-from flask_login import LoginManager
+from flask import render_template, redirect, request
+from flask_login import LoginManager, login_required, current_user
 from flask_mysqldb import MySQL
-from forum.models import Subforum, db, User
+from forum.models import Subforum, db, User, Post
 #from frontend_app import application as frontend
 
 #application = DispatcherMiddleware(frontend, {
@@ -77,6 +77,17 @@ with app.app_context():
 def index():
 	subforums = Subforum.query.filter(Subforum.parent_id == None).order_by(Subforum.subID)
 	return render_template("subforums.html", subforums=subforums)
+
+# @login_required
+# @app.route('/react/<int: post_id >/action>')
+# def react_action(post_id, action):
+# 	post = Post.query.filter_by(id=post_id).first_or_404()
+# 	if action == "react":
+# 		current_user.react_post(post)
+# 		db.session.commit()
+# 	return redirect(request.referrer)
+
+
 
 
 
