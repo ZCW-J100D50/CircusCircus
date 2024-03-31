@@ -28,6 +28,22 @@
 		<input class="inputbox" style="margin-bottom: 1%;" type="submit" value="Comment">
 	</form>
 </div>
+<div class="reacts">
+	<form action="/action_react?post={{ post.postID }}" method="POST">
+		<button class="btn btn-default btn-sm" type="submit" name="thumbsup" style={{thumbsup_style}}>
+			  <span class="glyphicon glyphicon-thumbs-up"></span> {{thumbsup_count}}
+			</button>
+		<button class="btn btn-default btn-sm" type="submit" name="heart" style={{heart_style}}>
+			  <span class="glyphicon glyphicon-heart"></span> {{heart_count}}
+			</button>
+		<button class="btn btn-default btn-sm" type="submit" name="fire" style={{fire_style}}>
+			  <span class="glyphicon glyphicon-fire"></span> {{fire_count}}
+			</button>
+		<button class="btn btn-default btn-sm" type="submit" name="music" style={{music_style}}>
+			  <span class="glyphicon glyphicon-music"></span> {{music_count}}
+			</button>
+	</form>
+</div>
 <div style="text-align: center;">
 
 

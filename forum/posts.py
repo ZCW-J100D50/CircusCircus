@@ -55,9 +55,6 @@ def viewpost():
     fire_count = React.query.filter(and_(React.postID == postid, React.reactType == "fire")).count()
     music_count = React.query.filter(and_(React.postID == postid, React.reactType == "music")).count()
 
-
-
-
     # Test code to show the image
     media = Media.query.filter(Media.post_id == postid).first()
     if media is None:
@@ -72,28 +69,19 @@ def viewpost():
         return render_template("viewpost_withimage.html", post=post, path=subforumpath,
                                comments=comments, media_filepath=filepath,
                                thumbsup_count=thumbsup_count, heart_count=heart_count,
-                               fire_count=fire_count, music_count=music_count)
+                               fire_count=fire_count, music_count=music_count,
+                               thumbsup_style=thumbsup_style, heart_style=heart_style,
+                               fire_style=fire_style, music_style=music_style)
     if media.mediaType == 'video':
         filepath = media.filePath
         return render_template("viewpost_withvideo.html", post=post, path=subforumpath,
                                comments=comments, media_filepath=filepath,
                                thumbsup_count=thumbsup_count, heart_count=heart_count,
-                               fire_count=fire_count, music_count=music_count)
-
-    # react = bool(request.args.get("react"))
-    # react_highlight = React.query.filter,
-    # if values on a line in the user id, post id, and react table are all matching,
-    # the appropriate react button stays highlighted for the user looking at the page.
-
+                               fire_count=fire_count, music_count=music_count,
+                               thumbsup_style=thumbsup_style, heart_style=heart_style,
+                               fire_style=fire_style, music_style=music_style)
 
     # TODO: Handle case where mediaType is not image or video for some reason
-
-    # obj = Media.query.filter(Media.post_id == postid).first()
-    # if obj != None:
-    #     image = b64encode(obj.data).decode("utf-8")
-    #     return render_template("viewpost_withimage.html", post=post, path=subforumpath, comments=comments, obj=obj, image=image)
-    # else:
-    #     return render_template("viewpost.html", post=post, path=subforumpath, comments=comments)
 
 
 @login_required

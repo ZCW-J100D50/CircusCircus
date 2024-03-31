@@ -171,8 +171,8 @@ class Media(db.Model):
     photoName = db.Column(db.String(255))
     userID = db.Column(db.Integer, db.ForeignKey('user.userID'))
     filePath = db.Column(db.String(255))
-    data = db.Column(db.LargeBinary)
     post_id = db.Column(db.Integer, db.ForeignKey("post.postID"))
+    mediaType = db.Column(db.String(255))
 
 
     def __init__(self, name, filepath, media_type):
