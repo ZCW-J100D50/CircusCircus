@@ -142,6 +142,11 @@ dmypy.json
 cython_debug/
 
 #images for website
+
 .static/media
 
-config.py
+.static/user_media
+
+#putting the config.py here at the end like @Deepa also does
+.config.py
+

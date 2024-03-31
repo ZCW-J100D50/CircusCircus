@@ -46,14 +46,16 @@ class Post(db.Model):
     subforum_id = db.Column(db.Integer, db.ForeignKey('subforum.subID'))
     postdate = db.Column(db.DateTime)
     media = db.relationship("Media", backref="post")
+    is_private = db.Column(db.Boolean)
 
     #cache stuff
     lastcheck = None
     savedresponse = None
-    def __init__(self, title, content, postdate):
+    def __init__(self, title, content, postdate,is_private):
         self.title = title
         self.content = content
         self.postdate = postdate
+        self.is_private = is_private
     def get_time_string(self):
         #this only needs to be calculated every so often, not for every request
         #this can be a rudamentary chache
@@ -138,10 +140,11 @@ class Media(db.Model):
     data = db.Column(db.LargeBinary)
     post_id = db.Column(db.Integer, db.ForeignKey("post.postID"))
 
-    def __init__(self, name, filepath, data):
+
+    def __init__(self, name, filepath, media_type):
         self.photoName = name
         self.filePath = filepath
-        self.data = data
+        self.mediaType = media_type
 
 
 def error(errormessage):
@@ -177,3 +180,48 @@ def valid_media(filepath):
 
 
 
+
+
+
+class Blogposts(db.Model):
+
+    id = db.Column(db.INTEGER, primary_key=True)
+    created = db.Column(db.DateTime)
+    title = db.Column(db.String(255), nullable=False)
+    content = db.Column(db.String(500), nullable=False)
+
+    lastcheck = None
+    savedresponce = None
+
+    def __init__(self, title, content, created):
+        self.title = title
+        self.content = content
+        self.created = created
+
+    def get_time_string(self):
+        # this only needs to be calculated every so often, not for every request
+        # this can be a rudamentary chache
+        now = datetime.datetime.now()
+
+
+        if self.lastcheck is None or (now - self.lastcheck).total_seconds() > 30:
+            self.lastcheck = now
+        else:
+            return self.savedresponce
+
+        diff = now - self.postdate
+
+        seconds = diff.total_seconds()
+        print(seconds)
+        if seconds / (60 * 60 * 24 * 30) > 1:
+            self.savedresponce = " " + str(int(seconds / (60 * 60 * 24 * 30))) + " months ago"
+        elif seconds / (60 * 60 * 24) > 1:
+            self.savedresponce = " " + str(int(seconds / (60 * 60 * 24))) + " days ago"
+        elif seconds / (60 * 60) > 1:
+            self.savedresponce = " " + str(int(seconds / (60 * 60))) + " hours ago"
+        elif seconds / (60) > 1:
+            self.savedresponce = " " + str(int(seconds / 60)) + " minutes ago"
+        else:
+            self.savedresponce = "Just a moment ago!"
+
+        return self.savedresponce

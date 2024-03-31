@@ -155,6 +155,69 @@
 .subsubforumdesc {
     font-style: italic;
     font-size: 12px; /* Update font size */
+=======
+.toplevelinfo{
+	padding: 0.5%;
+	font-weight: bold;
+}
+.actualpost{
+	padding: 1%;
+	border: 1px solid black;
+	border-collapse: collapse;
+	margin-bottom: 1%;
+}
+.actualposttitle{
+	border-collapse: collapse;
+	border-bottom: 1px solid black;
+	padding: 1%;
+	font-size: 16pt;
+	font-weight: bold;
+}
+.postcontent{
+	padding: 1%;
+}
+.postimage{
+    display: flex;
+    height: auto;
+    justify-content: center;
+    align-items: center;
+}
+.postvideo{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.postposter{
+	font-size: 12pt;
+	font-style: italic;
+	color: black;
+}
+.posttime{
+	font-style: italic;
+	font-size: 11pt;
+}
+.whitespace{
+	white-space: pre-line;
+}
+.comments{
+	border: 1px solid gray;
+	padding: 1%;
+	margin-top: 1%;
+}
+.comment{
+	border-bottom: 1px solid gray;
+}
+.commentuser{
+	display: inline;
+	font-weight: bold;
+}
+.commentcontent{
+	display: inline;
+}
+.commenttime{
+	font-size: 11pt;
+	font-style: italic;
+
 }
 
 .toplevelinfo {
@@ -172,63 +235,6 @@
         width: 100%; /* Set the width to 100% */
         height: 30px; /* Set a fixed height */
     }
-.actualpost {
-    padding: 10px; /* Update padding */
-    border: 1px solid black;
-    border-collapse: collapse;
-    margin-bottom: 10px; /* Update margin bottom */
-}
-
-.actualposttitle {
-    border-collapse: collapse;
-    border-bottom: 1px solid black;
-    padding: 10px; /* Update padding */
-    font-size: 16px; /* Update font size */
-    font-weight: bold;
-}
-
-.postcontent {
-    padding: 5px; /* Update padding */
-}
-
-.postposter {
-    font-size: 12px; /* Update font size */
-    font-style: italic;
-    color: black;
-}
-
-.posttime {
-    font-style: italic;
-    font-size: 11px; /* Update font size */
-}
-
-.whitespace {
-    white-space: pre-line;
-}
-
-.comments {
-    border: 1px solid gray;
-    padding: 10px; /* Update padding */
-    margin-top: 10px; /* Update margin top */
-}
-
-.comment {
-    border-bottom: 1px solid gray;
-}
-
-.commentuser {
-    display: inline;
-    font-weight: bold;
-}
-
-.commentcontent {
-    display: inline;
-}
-
-.commenttime {
-    font-size: 11px; /* Update font size */
-    font-style: italic;
-}
 
 .addcomment {
     display: none;

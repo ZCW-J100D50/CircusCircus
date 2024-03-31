@@ -1,5 +1,5 @@
 
-from .models import User
+from forum.models import User
 
 import re
 
