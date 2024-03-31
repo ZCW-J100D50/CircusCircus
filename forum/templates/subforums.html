@@ -11,6 +11,9 @@
             height: 300px; /* Set fixed height for each column */
             overflow-y: auto; /* Enable vertical scrolling */
         }
+        body {
+            background-color: #1E90FF; /* Set background color */
+        }
     </style>
 </head>
 <!-- Hero Section -->
@@ -21,10 +24,8 @@
             <div class="col-md-4">
                 <div class="card h-100">
                     <div class="card-body column-container">
-                        <h5 class="card-title">Blog</h5>
-         <a href="blog">
-                        <img src="https://images.app.goo.gl/yfAqbS5hojaH8e7E7" alt="dance dance">
-</a>
+                        <h3 class="card-title">Blog</h3>
+                        <img class="card-img-top" src= "static/media/dance.jpeg" alt="dance">
                     </div>
                 </div>
 
@@ -33,9 +34,10 @@
             <div class="col-md-4">
                 <div class="card h-100">
                     <div class="card-body column-container">
-                        <h5 class="card-title">Main Forum</h5>
+                        <h3 class="card-title"><a href="/subforum?sub=1">Main Forum</a></h3>
+                        <img class="card-img-top" src= "static/media/dance2.jpeg" alt="dance2">
                         <!-- Dynamic content here -->
-                              <div class="subforumheader">
+                              <!--<div class="subforumheader">
 
 	                                <div class="subforumheaderdesc">
 	                                  Announcements, bug reports, and general discussion about the forum belongs here
@@ -57,7 +59,7 @@
                                           </div>
 		                            </div>
 
-                              </div>
+                              </div> -->
 
                     </div>
                 </div>
@@ -65,28 +67,29 @@
             <div class="col-md-4">
                 <div class="card h-100">
                     <div class="card-body column-container">
-                        <h5 class="card-title">Other Forums</h5>
+                        <h3 class="card-title">Other Forums</h3>
                         <!-- Dynamic content here -->
                              <div class="subforumheader">
-                                   <div class="subforumheadertitle">
-	                                    General Discussions
-	                               </div>
+                                 <a href="/subforum?sub=4">Go Groove Ticket alerts</a>
+<!--                                   <div class="subforumheadertitle">-->
+<!--	                                    General Discussions-->
+<!--	                               </div>-->
 
-	                                <div class="subforumheaderdesc">
-	                                  Use this subforum to post anything you want
-	                                 </div>
-                                 <a href="/subforum?sub=4">General Discussion</a>
+	                                <h5><div class="subforumheaderdesc">
+	                                  Subforum for ticket alerts
+	                                 </div></h5>
+<!--                                 <a href="/subforum?sub=4">Go Groove Ticket alerts</a>-->
                              </div>
                         <div class="subforumheader">
-	                               <div class="subforumheadertitle">
-	                                    Other
-	                               </div>
+                                 <a href="/subforum?sub=5">Hot music DJ forum</a>
 
-	                                <div class="subforumheaderdesc">
+<!--	                               <div class="subforumheadertitle">-->
+<!--	                                    Other-->
+<!--	                               </div>-->
+
+	                                <h5><div class="subforumheaderdesc">
 	                                  Discuss Other things here
-	                                 </div>
-                            <a href="/subforum?sub=5">Other</a>
-                             </div>
+	                              </div></h5>
 
                     </div>
                 </div>

@@ -23,11 +23,72 @@
 	</div>
 {% endif %}
 
-    <!-- my code starts here -->
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <!-- new navbar code -->
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
   <div class="container-fluid">
-    <a class="navbar-brand" href="#">Navbar</a>
+      <a class="navbar-brand" href="#">
+      <img src= "static/media/logo forum.png" alt="Forum Logo" width="50" height="50"> <!-- Adjust width and height as needed -->
+    </a>
+<!--    <a class="navbar-brand" href="#">Navbar</a>-->
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+<!--    <div class="collapse navbar-collapse" id="navbarSupportedContent">-->
+<!--      <ul class="navbar-nav me-auto mb-2 mb-lg-0">-->
+<!--        <li class="nav-item">-->
+<!--          <a class="nav-link active" aria-current="page" href="#">Home</a>-->
+<!--        </li>-->
+<!--        <li class="nav-item">-->
+<!--          <a class="nav-link" href="#">Link</a>-->
+<!--        </li>-->
+<!--      </ul>-->
+<!--    </div>-->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+        <button class="nav-link active btn btn-primary me-2" aria-current="page" onclick="window.location.href='#'">Home</button>
+        </li>
+        <li class="nav-item">
+         <button class="nav-link btn btn-primary" onclick="window.location.href='#'">Link</button>
+        </li>
+    </ul>
+    </div>
+
+    <!-- Move the cog icon dropdown outside of the main ul and align it to the right -->
+    <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle cog-icon" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+         <!-- &#x2699;  -->
+        </a>
+        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+          {% if not current_user.is_authenticated %}
+          <li><a class="dropdown-item" href="/loginform">Login</a></li>
+          {% else %}
+          <li><a class="dropdown-item" href="/action_logout">Logout</a></li>
+          {% endif %}
+          {% if not current_user.is_authenticated %}
+          <li><a class="dropdown-item" href="/loginform">Sign-up</a></li>
+          {% endif %}
+          {% if current_user.is_authenticated %}
+          <li><a class="dropdown-item" href="#">User-settings</a></li>
+          {% endif %}
+          {% if current_user.is_authenticated %}
+          <li><a class="dropdown-item" href="#">Direct messages</a></li>
+          {% endif %}
+          <li><hr class="dropdown-divider"></li>
+          <li><a class="dropdown-item" href="#">Admin</a></li>
+        </ul>
+      </li>
+    </ul>
+  </div>
+</nav>
+
+    <!--new navbar code ends here -->
+<!-- my code starts here
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <div class="container-fluid">-->
+    <!--<a class="navbar-brand" href="#">Navbar</a> -->
+   <!-- <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
@@ -43,17 +104,23 @@
       </ul>
          <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            Dropdown
+            &#x2699;
           </a>
           <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
               {% if not current_user.is_authenticated %}
             <li><a class="dropdown-item" href="/loginform">Login</a></li>
               {% else %}
-              <li><a class="dropdown-item" href="#">Logout</a></li>
+              <li><a class="dropdown-item" href="/action_logout">Logout</a></li>
               {% endif %}
               {% if not current_user.is_authenticated %}
             <li><a class="dropdown-item" href="/loginform">Sign-up</a></li>
               {% endif %}
+            {% if current_user.is_authenticated %}
+              <li><a class="dropdown-item" href="#">User-settings</a></li>
+            {% endif %}
+            {% if current_user.is_authenticated %}
+              <li><a class="dropdown-item" href="#">Direct messages</a></li>
+            {% endif %}
             <li><hr class="dropdown-divider"></li>
             <li><a class="dropdown-item" href="#">Admin</a></li>
           </ul>
@@ -64,7 +131,7 @@
     </div>
   </div>
 </nav>
-	<!-- code end here -->
+	 code end here -->
 
 
 	<div class="content">
@@ -74,18 +141,14 @@
 	</div>
 </div>
 
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
-<script src="{{ url_for('static', filename='bootstrap.min.js') }}"></script>
-
-
-
-
-
 <div class="footer">
 		{% include 'footer.html' %}
 	</div>
 
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+<script src="{{ url_for('static', filename='bootstrap.min.js') }}"></script>
 </body>
 
 

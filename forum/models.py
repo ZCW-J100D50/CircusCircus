@@ -134,10 +134,10 @@ class Comment(db.Model):
 #Define media
 class Media(db.Model):
     photoID = db.Column(db.Integer, primary_key=True)
-    photoName = db.Column(db.Text)
+    photoName = db.Column(db.String(255))
     userID = db.Column(db.Integer, db.ForeignKey('user.userID'))
-    filePath = db.Column(db.Text)
-    mediaType = db.Column(db.Text)
+    filePath = db.Column(db.String(255))
+    data = db.Column(db.LargeBinary)
     post_id = db.Column(db.Integer, db.ForeignKey("post.postID"))
 
 
