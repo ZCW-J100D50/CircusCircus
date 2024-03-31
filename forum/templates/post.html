@@ -5,11 +5,12 @@
     <span class="badge badge-primary">{{ post['created'] }}</span>
     <p>{{ post['content'] }}</p>
 
-{% for post in posts %}
-  {% if current_user.has_reacted_post(post)%}
-    <a href="{{ url_for('react_action', post_id = post.id, action='undo_react_to_post')}}">Undo React</a>
-  {%else%}
-    <a href="{{url_for('react_action', post_id = post.id, action='react_to_post')}}">React</a>
-  {%endif%}
+<!--{% for post in posts %}-->
+<!--  {% if current_user.has_reacted_post(post)%}-->
+<!--    <a href=thumbsup>"{{('react_action', post_id = post.id, action='undo_react_to_post')}}">Undo React</a>-->
+<!--  {%else%}-->
+<!--    <a href=thumbsup>"{{('react_action', post_id = post.id, action='react_to_post')}}">React</a>-->
+<!--  {%endif%}-->
+<!--  {{ post.reacts.count() }} reacts-->
 {% endblock %}
 

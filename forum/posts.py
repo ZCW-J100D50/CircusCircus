@@ -1,11 +1,11 @@
 import os
 from pathlib import Path
-from flask_sqlalchemy import and_
 from flask_login import current_user, login_user, logout_user
 import datetime
 from flask_login.utils import login_required
-from forum.models import User, Post, Comment, Subforum, valid_content, valid_title, db, generateLinkPath, error, Media, \
-    React
+from sqlalchemy import and_
+from forum.models import User, Post, Comment, Subforum, valid_content, valid_title, db, generateLinkPath, error, Media, React
+
 from flask import Blueprint, render_template, request, redirect, url_for
 from base64 import b64encode
 
@@ -35,18 +35,27 @@ def viewpost():
         subforumpath = generateLinkPath(post.subforum.subID)
     comments = Comment.query.filter(Comment.post_id == postid).order_by(Comment.commentID.desc()) # no need for scalability now
 
-    #TODO Get reaction count from database
-    # THis will look something like: fire_count = len(React.query.filter(React.postID == postid && React.reactType == "fire"))
-    # thumbsup_count = 5
-    # heart_count = 7
-    # fire_count = 1775
-    # music_count = 135
+    thumbsup_style = ''
+    heart_style = ''
+    fire_style = ''
+    music_style = ''
+    if current_user.is_authenticated:
+        current_user_reacts = current_user.current_reacts_to_post(post)
+        if current_user_reacts["thumbsup"]:
+            thumbsup_style = 'background-color:lightblue'
+        if current_user_reacts["heart"]:
+            heart_style = 'background-color:lightblue'
+        if current_user_reacts["fire"]:
+            fire_style = 'background-color:lightblue'
+        if current_user_reacts["music"]:
+            music_style = 'background-color:lightblue'
+
+    thumbsup_count = React.query.filter(and_(React.postID == postid, React.reactType == "thumbsup")).count()
+    heart_count = React.query.filter(and_(React.postID == postid, React.reactType == "heart")).count()
+    fire_count = React.query.filter(and_(React.postID == postid, React.reactType == "fire")).count()
+    music_count = React.query.filter(and_(React.postID == postid, React.reactType == "music")).count()
 
 
-    thumbsup_count = len(React.query.filter(and_(React.postID == postid, React.reactType == "thumbsup"))).count()
-    heart_count = len(React.query.filter(and_(React.postID == postid, React.reactType == "heart"))).count()
-    fire_count = len(React.query.filter(and_(React.postID == postid, React.reactType == "fire"))).count()
-    music_count = len(React.query.filter(and_(React.postID == postid, React.reactType == "music"))).count()
 
 
     # Test code to show the image
@@ -55,7 +64,9 @@ def viewpost():
         return render_template("viewpost.html", post=post, path=subforumpath,
                                comments=comments,
                                thumbsup_count=thumbsup_count, heart_count=heart_count,
-                               fire_count=fire_count, music_count=music_count)
+                               fire_count=fire_count, music_count=music_count,
+                               thumbsup_style=thumbsup_style, heart_style=heart_style,
+                               fire_style=fire_style, music_style=music_style)
     if media.mediaType == 'image':
         filepath = media.filePath
         return render_template("viewpost_withimage.html", post=post, path=subforumpath,

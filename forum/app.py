@@ -71,14 +71,14 @@ def index():
 	subforums = Subforum.query.filter(Subforum.parent_id == None).order_by(Subforum.subID)
 	return render_template("subforums.html", subforums=subforums)
 
-@login_required
-@app.route('/react/<int: post_id >/action>')
-def react_action(post_id, action):
-	post = Post.query.filter_by(id=post_id).first_or_404()
-	if action == "react":
-		current_user.react_post(post)
-		db.session.commit()
-	return redirect(request.referrer)
+# @login_required
+# @app.route('/react/<int: post_id >/action>')
+# def react_action(post_id, action):
+# 	post = Post.query.filter_by(id=post_id).first_or_404()
+# 	if action == "react":
+# 		current_user.react_post(post)
+# 		db.session.commit()
+# 	return redirect(request.referrer)
 
 
 
