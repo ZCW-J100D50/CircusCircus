@@ -189,3 +189,46 @@
 .varwidth{
 	width: 50%;
 }
+
+
+
+/* THIS IS IN THE <div class="user_settings_box">*/
+
+.user_settings_box{
+	font-style: italic;
+	font-size: 12pt;
+}
+.USER_CHANGE_PASSWORD_URL{
+	font-style: italic;
+	font-size: 12pt;
+}
+
+.USER_CHANGE_USERNAME_URL{
+	font-style: italic;
+	font-size: 12pt;
+}
+
+.USER_CONFIRM_EMAIL_URL{
+	font-style: italic;
+	font-size: 12pt;
+}
+
+.USER_EDIT_USER_PROFILE_URL{
+	font-style: italic;
+	font-size: 12pt;
+}
+
+.USER_LOGOUT_URL{
+	font-style: italic;
+	font-size: 12pt;
+}
+
+.USER_REGISTER_URL{
+	font-style: italic;
+	font-size: 12pt;
+}
+
+.USER_RESET_PASSWORD_URL{
+	font-style: italic;
+	font-size: 12pt;
+}

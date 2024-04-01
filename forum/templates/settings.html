@@ -1,11 +1,11 @@
 <!--<!DOCTYPE html>-->
-<!--<html>-->
-<!--<head>-->
-<!--	<link rel="stylesheet" type="text/css" href="{{url_for('static', filename="bootstrap.min.css")}}">-->
-<!--	<link rel="stylesheet" type="text/css" href="{{url_for('static', filename="style.css")}}">-->
-<!--	<title>{{ config.SITE_NAME }}</title>-->
-<!--</head>-->
-<!--<body>-->
+<html>
+<head>
+	<link rel="stylesheet" type="text/css" href="{{url_for('static', filename="bootstrap.min.css")}}">
+	<link rel="stylesheet" type="text/css" href="{{url_for('static', filename="style.css")}}">
+	<title>{{ config.SITE_NAME }}</title>
+</head>
+<body>
 <!--<div class="page">-->
 <!--	<div class="header">-->
 <!--		{% include 'header.html' %}-->
@@ -20,68 +20,53 @@
 <!--	{% endfor %}-->
 <!--	</div>-->
 <!--{% endif %}-->
-<!--	<div class="content">-->
-		{% block body %}THIS IS WHERE I WILL PUT MY CONTENT FOR THE ABOUT PAGE <br>
-		<li>CSS STUFF</li>
-		<li>BANNER OR OTHER STUFF LYDIA MADE</li>
+<!--{% block body %}-->
+	<div class="content">
+		 USER SETTINGS - GROOVE GATHERING <br>
 		<li>USER SETTINGS (WHY NOT? I WILL STICK 'EM RIGHT HERE)</li>
-		<li>(WHICH COULD BE STUCK ELSEWHERE)</li>
 
-		HERE ARE THE SETTING LINKS:<br>
+		HERE ARE THE USER SETTINGS LINKS:<br>
 
+		<li>USER_REGISTER_URL = '/user/register'
+		</li>
 		<li>USER_CHANGE_PASSWORD_URL = '/user/change-password'
 		</li>
 		<li>USER_CHANGE_USERNAME_URL = '/user/change-username'
 		</li>
-		<li>USER_CONFIRM_EMAIL_URL = '/user/confirm-email/TOKEN'
-		</li>
-		<li>USER_EDIT_USER_PROFILE_URL = '/user/edit_user_profile'
-		</li>
-		<li>USER_LOGOUT_URL = '/user/sign-out'
-		</li>
-		<li>USER_REGISTER_URL = '/user/register'
-		</li>
+
 <!--If you don't remember password-->
 		<li>USER_RESET_PASSWORD_URL = '/user/reset-password/TOKEN'
 		</li>
 
-ALSO, HERE IS OUR CHATTER TOOL! <br>
-In this tool you can: <br>
-		<li>Pick your username</li>
-		<li>Chat in real time with others who are also online.</li>
-		<br>
-		<li><a href="http://127.0.0.1:5000/chatter" target="_blank">#1. CLICK HERE TO OPEN CHATTER (Person #1) IN A NEW TAB </a> </li>
-		<br>
-		<li><a href=http://127.0.0.1:5000/chatter target="_blank">#2. CLICK HERE TO OPEN THE CHATTER (Person #2) IN A SECOND TAB </a> </li>
-		<br>
-		<li>#3. Please use the tabs to "talk" back to yourself if no one else is online</li>
-			<br>
-			<br>
-		<li>	(no one will be in this test prototype so please humor all of us and open both tabs, thank you!</li>
-
-
-
-
-{% endblock %}
-	</div>
-</div>
-</body>
-
-{% extends 'layout.html' %}
-{% block body %}
-
+<!--<h2><a href="Creating_a_Chat_App_With_Flask-SocketIO/flask_socketio_chat/chatapp/templates/chatter.html" target="_blank"> CLICK HERE TO GO TO OUR CHATTER PAGE.</a>-->
+<!--{% extends 'layout.html' %}-->
+<!--{% block body %}-->
 
 <div class="user_settings_box">
+	<h3>User Register</h3>
+	<!-- '/user/register'-->
+	<form action="/action_user_settings" method="POST">
+	<input class="userelement" type="text" placeholder="User Register" name="user_register"><br>
+	<input class="userelement" type="password" placeholder="User Register" name="user_register"><br>
+	<input class="userelement" type="submit" value="User Register">
+	</form>
+
+</div>
+<br><br>
+<div class="user_settings_box">
 	<h3>Change Password</h3>
+	<!-- '/user/change-password'-->
 	<form action="/action_user_settings" method="POST">
 	<input class="userelement" type="text" placeholder="Change password" name="change_password"><br>
 	<input class="userelement" type="password" placeholder="New Password" name="new_password"><br>
 	<input class="userelement" type="submit" value="Change Password">
 	</form>
+
 </div>
 <br><br>
 <div class="user_settings_box">
 	<h3>Reset Password</h3>
+	<!-- '/user/reset-password/TOKEN'-->
 	<form action="/action_user_settings" method="POST">
 	<input class="loginelement" type="text" placeholder="Reset Password" name="reset_password"><br>
 	<input class="loginelement" type="password" placeholder="Reset Password" name="reset_password"><br>
@@ -92,15 +77,13 @@ In this tool you can: <br>
 <br><br>
 <div class="user_settings_box">
 	<h3>Change Username</h3>
+	<!-- '/user/change-username'-->
 	<form action="/action_user_settings" method="POST">
 	<input class="loginelement" type="text" placeholder="Change Username" name="change_username"><br>
 	<input class="loginelement" type="text" placeholder="Change Username" name="change_username"><br>
 	<input class="loginelement" type="submit" value="Change Username">
 	</form>
-
 </div>
-
-{% endblock %}
-
-
+</body>
+<!--{% endblock %}-->
 </html>

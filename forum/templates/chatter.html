@@ -21,32 +21,31 @@
 	</div>
 {% endif %}
 	<div class="content">
-		{% block body %}Enjoy our Chat/Messaging tool! <br>
-		In this tool you can: <br>
-		<li>Pick your username</li>
-		<li>Chat in real time with others who are also online.</li>
+		{% block body %}<h2>USE OUR CHATTER TOOL - YOU CAN: <br>
+		<ol>Pick your username</ol>
+		<ol>Chat in real time with others who are also online.</ol>
 		<br>
-		<li><a href="http://127.0.0.1:5000/chatter" target="_blank">#1. CLICK HERE TO OPEN CHATTER (Person #1) IN A NEW TAB </a> </li>
+		<a href="http://127.0.0.1:5000/chatter" target="_blank">#1. CLICK HERE TO OPEN CHATTER (Person #1) IN A NEW TAB </a>
 		<br>
-		<li><a href=http://127.0.0.1:5000/chatter target="_blank">#2. CLICK HERE TO OPEN THE CHATTER (Person #2) IN A SECOND TAB </a> </li>
+		<a href=http://127.0.0.1:5000/chatter target="_blank">#2. CLICK HERE TO OPEN THE CHATTER (Person #2) IN A SECOND TAB </a>
 		<br>
-		<li>#3. Please use the tabs to "talk" back to yourself if no one else is online</li>
-			<br>
-			<br>
-		<li>	(no one will be in this test prototype so please humor all of us and open both tabs, thank you!</li>
+		#3. Please use the tabs to "talk" back to yourself between tabs if no one else is online</h2>
+		<h3>
+		<li>	(actually no one else will be in this prototype so please humor all of us + open BOTH tabs, thank you!</li></h3>
 
-
-	{% endblock %}
 	</div>
 </div>
+
 </body>
 
 {% extends 'layout.html' %}
 {% block body %}
-
-</div>
-
 {% endblock %}
 
 
+
+
+<div class="footer">
+		{% include 'footer.html' %}
+	</div>
 </html>

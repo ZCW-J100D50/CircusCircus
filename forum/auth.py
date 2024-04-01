@@ -6,13 +6,65 @@ from flask import Blueprint, render_template, request, redirect, url_for
 from forum.models import User, Post, Comment, Subforum, valid_content, valid_title, db, generateLinkPath, error
 from forum.user import username_taken, email_taken, valid_username
 
-
+# ACTION LINKS FROM FLASK
+# USER_CHANGE_PASSWORD_URL = '/user/change-password'
+# USER_CHANGE_USERNAME_URL = '/user/change-username'
+# USER_FORGOT_PASSWORD_URL = '/user/forgot-password'
 
 auth = Blueprint('auth', __name__, template_folder='templates')
 
 @auth.route('/loginform') #done
 def loginform():
 	return render_template("login.html")
+
+# CHANGE PASSWORD
+# USER_CHANGE_PASSWORD_URL = '/user/change-password'
+# need TRUE username + TRUE PASSWORD to change
+# ELSE "access denied?  Need proper login credentials!"
+@auth.route('/action_login', methods=['POST'])
+def action_login():
+    username = request.form['username']
+    password = request.form['password']
+    user = User.query.filter(User.username == username).first()
+    if user and user.check_password(password):
+        login_user(user)
+    else:
+        errors = []
+        errors.append("Username or password is incorrect!")
+        return render_template("login.html", errors=errors)
+    return redirect("/")
+
+# CHANGE USERNAME
+# USER_CHANGE_USERNAME_URL = '/user/change-username'
+@auth.route('/action_login', methods=['POST'])
+def action_login():
+    username = request.form['username']
+    password = request.form['password']
+    user = User.query.filter(User.username == username).first()
+    if user and user.check_password(password):
+        login_user(user)
+    else:
+        errors = []
+        errors.append("Username or password is incorrect!")
+        return render_template("login.html", errors=errors)
+    return redirect("/")
+
+# FORGOT PASSWORD - cannot verify just let them change.
+# USER_FORGOT_PASSWORD_URL = '/user/forgot-password'
+@auth.route('/action_login', methods=['POST'])
+def action_login():
+    username = request.form['username']
+    password = request.form['password']
+    user = User.query.filter(User.username == username).first()
+    if user and user.check_password(password):
+        login_user(user)
+    else:
+        errors = []
+        errors.append("Username or password is incorrect!")
+        return render_template("login.html", errors=errors)
+    return redirect("/")
+
+
 
 @auth.route('/action_login', methods=['POST'])
 def action_login():

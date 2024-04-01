@@ -52,3 +52,8 @@ SQLAlchemy==2.0.29
 typing_extensions==4.10.0
 Werkzeug==3.0.1
 wheel==0.43.0
+
+
+sphinx>=7.2.6
+alabaster>=0.7.16
+
