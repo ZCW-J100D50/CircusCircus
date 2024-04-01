@@ -15,3 +15,5 @@ honcho
 mysql-connector-python~=8.3.0
 pymysql
 cryptography
+wtforms
+
