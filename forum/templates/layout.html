@@ -57,7 +57,7 @@
         <button class="nav-link active btn btn-primary me-2" aria-current="page" onclick="window.location.href='#'">Home</button>
         </li>
         <li class="nav-item">
-         <button class="nav-link btn btn-primary" onclick="window.location.href='#'">Link</button>
+         <button class="nav-link btn btn-primary" onclick="window.location.href='aboutform'">About</button>
         </li>
     </ul>
     </div>
@@ -81,10 +81,10 @@
           <li><a class="dropdown-item" href="#">User-settings</a></li>
           {% endif %}
           {% if current_user.is_authenticated %}
-          <li><a class="dropdown-item" href="#">Direct messages</a></li>
+          <li><a class="dropdown-item" href="/chatter">Chatter</a></li>
           {% endif %}
           <li><hr class="dropdown-divider"></li>
-          <li><a class="dropdown-item" href="#">Admin</a></li>
+          <li><a class="dropdown-item" href="/about">About</a></li>
         </ul>
       </li>
     </ul>
