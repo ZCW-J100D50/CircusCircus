@@ -1,0 +1,11 @@
+{% extends 'layout.html' %}
+{% block body%}
+
+<h2>Dashboard</h2>
+	<br/><br/>
+<strong>username: </strong>{{current_user.username}}<br/>
+<strong>email:</strong>{{current_user.email}}<br/>
+<a href="{{url_for('settings.updateusername', user_id=current_user.userID  )}}"><input class="loginelement" type="submit" value="Update Username"></a>
+<a href="{{url_for('settings.updatepassword', user_id=current_user.userID  )}}"><input class="loginelement" type="submit" value="Update Password"></a>
+<a href="{{url_for('settings.updateemail', user_id=current_user.userID  )}}"><input class="loginelement" type="submit" value="Update Email"></a>
+{% endblock %}

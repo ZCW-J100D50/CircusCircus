@@ -1,0 +1,16 @@
+{% extends 'layout.html' %}
+{% block body %}
+
+
+<br><br>
+<div class="loginbox">
+	<h3>Update Username</h3>
+	<form method="POST">
+	{{form.username.label}}<br/>
+	{{form.username()}}<br/>
+	{{form.submit()}}<br/>
+	</form>
+</div>
+
+
+{% endblock %}
