@@ -26,6 +26,7 @@ class User(UserMixin, db.Model):
     comments = db.relationship("Comment", backref="user")
     media = db.relationship("Media", backref="user") #establishes images in relation to the user
     reacts = db.relationship('React', backref="user", lazy= "dynamic")
+    messages = db.relationship('DirectMessages', backref='user')
 
     def __init__(self, email, username, password):
         self.email = email
@@ -268,3 +269,10 @@ class Blogposts(db.Model):
             self.savedresponce = "Just a moment ago!"
 
         return self.savedresponce
+
+class DirectMessages(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    userID = db.Column(db.Integer, db.ForeignKey('user.userID'))
+    sendingcontent = db.Column(db.String(255), nullable=False)
+    receivingcontent = db.Column(db.String(255), nullable=False)
+    created = db.Column(db.DateTime)
