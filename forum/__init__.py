@@ -7,6 +7,8 @@ from forum.posts import posts
 from forum.subforums import subforums
 from forum.blog import blog
 from forum.settings import settings
+from forum.test import test
+from forum.messages import messages
 #from forum.routes import rt
 from os import path
 
@@ -24,6 +26,8 @@ def create_app():
     app.register_blueprint(subforums)
     app.register_blueprint(blog)
     app.register_blueprint(settings)
+    app.register_blueprint(test)
+    app.register_blueprint(messages)
     # app.register_blueprint(rt)
     # Set globals
     from forum.models import db
